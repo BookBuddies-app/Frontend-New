@@ -29,10 +29,10 @@ export default function Footer() {
           <div>
             <h4 className="font-bold mb-6 font-serif text-cafe-warm-white text-xl">پیوندهای مفید</h4>
             <ul className="space-y-4">
-              <li><a href="#" className="text-cafe-latte hover:text-cafe-golden transition-all duration-300 text-lg hover:translate-x-2 inline-block">درباره ما</a></li>
+              <li><a href="/about" className="text-cafe-latte hover:text-cafe-golden transition-all duration-300 text-lg hover:translate-x-2 inline-block">درباره ما</a></li>
               <li><a href="/events" className="text-cafe-latte hover:text-cafe-golden transition-all duration-300 text-lg hover:translate-x-2 inline-block">رویدادها</a></li>
-              <li><a href="#" className="text-cafe-latte hover:text-cafe-golden transition-all duration-300 text-lg hover:translate-x-2 inline-block">قوانین</a></li>
-              <li><a href="#" className="text-cafe-latte hover:text-cafe-golden transition-all duration-300 text-lg hover:translate-x-2 inline-block">تماس با ما</a></li>
+              <li><a href="/rules" className="text-cafe-latte hover:text-cafe-golden transition-all duration-300 text-lg hover:translate-x-2 inline-block">قوانین</a></li>
+              <li><a href="/contact" className="text-cafe-latte hover:text-cafe-golden transition-all duration-300 text-lg hover:translate-x-2 inline-block">تماس با ما</a></li>
             </ul>
           </div>
           

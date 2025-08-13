@@ -37,14 +37,16 @@ export default function Home() {
                 مشاهده رویدادها
               </Button>
             </Link>
-            <Button
-              variant="outline"
-              size="lg"
-              className="border-2 border-cafe-mocha dark:border-cafe-caramel text-cafe-mocha dark:text-cafe-caramel hover:bg-cafe-mocha hover:text-white dark:hover:bg-cafe-caramel dark:hover:text-cafe-espresso px-10 py-4 text-xl rounded-xl transition-all duration-300"
-            >
-              <BookOpen className="w-6 h-6 ml-3" />
-              درباره ما بیشتر بدانید
-            </Button>
+            <Link to="/about">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-2 border-cafe-mocha dark:border-cafe-caramel text-cafe-mocha dark:text-cafe-caramel hover:bg-cafe-mocha hover:text-white dark:hover:bg-cafe-caramel dark:hover:text-cafe-espresso px-10 py-4 text-xl rounded-xl transition-all duration-300"
+              >
+                <BookOpen className="w-6 h-6 ml-3" />
+                درباره ما بیشتر بدانید
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

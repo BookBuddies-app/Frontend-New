@@ -2,13 +2,23 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { BookOpen, Menu, Home, Calendar, Info, Phone } from "lucide-react";
+import { 
+  BookOpen, 
+  Menu, 
+  Home, 
+  Calendar, 
+  Info, 
+  Phone, 
+  LogIn, 
+  UserPlus,
+  User
+} from "lucide-react";
 
 const navigationItems = [
   { href: "/", label: "خانه", icon: Home },
   { href: "/events", label: "رویدادهای آینده", icon: Calendar },
-  { href: "#about", label: "درباره ما", icon: Info },
-  { href: "#contact", label: "تماس", icon: Phone },
+  { href: "/about", label: "درباره ما", icon: Info },
+  { href: "/contact", label: "تماس", icon: Phone },
 ];
 
 export default function Navbar() {
@@ -50,9 +60,23 @@ export default function Navbar() {
                   </Button>
                 </Link>
               ))}
-              <Button className="bg-cafe-warm-gradient text-white hover:shadow-lg hover:scale-105 transition-all duration-300 px-6 py-3 rounded-xl text-base font-medium">
-                ورود / ثبت نام
-              </Button>
+              <div className="flex items-center gap-3">
+                <Link to="/login">
+                  <Button 
+                    variant="outline" 
+                    className="border-cafe-caramel text-cafe-caramel hover:bg-cafe-caramel hover:text-white transition-all duration-300 px-5 py-2.5 rounded-xl font-medium"
+                  >
+                    <LogIn className="w-4 h-4 ml-2" />
+                    ورود
+                  </Button>
+                </Link>
+                <Link to="/register">
+                  <Button className="bg-cafe-warm-gradient text-white hover:shadow-lg hover:scale-105 transition-all duration-300 px-5 py-2.5 rounded-xl font-medium">
+                    <UserPlus className="w-4 h-4 ml-2" />
+                    ثبت نام
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
           
@@ -89,9 +113,27 @@ export default function Navbar() {
                     </Link>
                   ))}
                   
-                  <Button className="bg-cafe-warm-gradient text-white hover:shadow-lg mt-6 px-6 py-4 rounded-xl text-lg font-medium">
-                    ورود / ثبت نام
-                  </Button>
+                  <div className="flex flex-col gap-3 mt-6">
+                    <Link to="/login">
+                      <Button 
+                        variant="outline" 
+                        className="w-full border-cafe-caramel text-cafe-caramel hover:bg-cafe-caramel hover:text-white transition-all duration-300 px-6 py-4 rounded-xl font-medium"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <LogIn className="w-5 h-5 ml-2" />
+                        ورود
+                      </Button>
+                    </Link>
+                    <Link to="/register">
+                      <Button 
+                        className="w-full bg-cafe-warm-gradient text-white hover:shadow-lg px-6 py-4 rounded-xl font-medium"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <UserPlus className="w-5 h-5 ml-2" />
+                        ثبت نام
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               </SheetContent>
             </Sheet>

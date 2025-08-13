@@ -232,7 +232,7 @@ export default function RegistrationModal({ isOpen, onClose, event }: Registrati
                   </FormControl>
                   <div className="space-y-1 leading-none">
                     <FormLabel className="text-sm text-cafe-dark">
-                      با <span className="text-cafe-brown hover:underline cursor-pointer">قوانین و مقررات</span> موافقم *
+                      با <a href="/rules" target="_blank" className="text-cafe-brown hover:underline cursor-pointer">قوانین و مقررات</a> موافقم *
                     </FormLabel>
                     <FormMessage />
                   </div>

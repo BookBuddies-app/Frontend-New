@@ -7,6 +7,12 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import Events from "@/pages/events";
 import EventDetail from "@/pages/event-detail";
+import About from "@/pages/about";
+import Contact from "@/pages/contact";
+import Rules from "@/pages/rules";
+import Login from "@/pages/login";
+import Register from "@/pages/register";
+import Profile from "@/pages/profile";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 
@@ -19,6 +25,12 @@ function Router() {
           <Route path="/" component={Home} />
           <Route path="/events" component={Events} />
           <Route path="/events/:id" component={EventDetail} />
+          <Route path="/about" component={About} />
+          <Route path="/contact" component={Contact} />
+          <Route path="/rules" component={Rules} />
+          <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
+          <Route path="/profile" component={Profile} />
           <Route component={NotFound} />
         </Switch>
       </main>
