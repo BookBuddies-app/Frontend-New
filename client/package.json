@@ -1,0 +1,10 @@
+{
+  "name": "ketab-cafe-client",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "cd .. && npm run dev",
+    "build": "cd .. && npm run build",
+    "start": "cd .. && npm run start"
+  }
+}

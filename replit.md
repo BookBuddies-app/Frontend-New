@@ -8,6 +8,15 @@ A Persian-language book club café application built with React, Express, and Dr
 
 Preferred communication style: Simple, everyday language.
 
+## Recent Issues Resolved
+
+**Path Resolution Error Fix (Aug 13, 2025):**
+- Fixed TypeError "paths[0] argument must be of type string. Received undefined" in vite.config.ts
+- Issue occurred when running commands from client folder instead of project root
+- Solution: Added client/package.json with scripts that redirect to root directory
+- Project structure: This is a monorepo that must be run from root directory
+- Commands work from both root and client folders now
+
 ## System Architecture
 
 ### Frontend Architecture
