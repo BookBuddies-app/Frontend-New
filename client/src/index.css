@@ -1,0 +1,166 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(38, 19%, 97%);
+  --foreground: hsl(25, 16%, 29%);
+  --card: hsl(45, 20%, 96%);
+  --card-foreground: hsl(25, 16%, 29%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(25, 16%, 29%);
+  --primary: hsl(20, 70%, 50%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(25, 16%, 29%);
+  --secondary-foreground: hsl(0, 0%, 100%);
+  --muted: hsl(45, 30%, 92%);
+  --muted-foreground: hsl(25, 16%, 29%);
+  --accent: hsl(85, 20%, 60%);
+  --accent-foreground: hsl(25, 16%, 29%);
+  --destructive: hsl(0, 70%, 55%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --border: hsl(45, 25%, 88%);
+  --input: hsl(45, 25%, 94%);
+  --ring: hsl(20, 70%, 50%);
+
+  /* Café color palette */
+  --cafe-brown: hsl(20, 60%, 35%);
+  --cafe-dark-brown: hsl(20, 50%, 25%);
+  --cafe-cream: hsl(45, 35%, 88%);
+  --cafe-orange: hsl(25, 75%, 55%);
+  --cafe-green: hsl(85, 25%, 60%);
+  --cafe-light: hsl(45, 25%, 96%);
+  --cafe-dark: hsl(25, 15%, 29%);
+
+  --font-sans: 'Vazirmatn', 'Estedad', sans-serif;
+  --font-serif: 'Estedad', Georgia, serif;
+  --font-mono: Menlo, monospace;
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: hsl(25, 15%, 8%);
+  --foreground: hsl(45, 20%, 88%);
+  --card: hsl(25, 15%, 12%);
+  --card-foreground: hsl(45, 20%, 88%);
+  --popover: hsl(25, 15%, 8%);
+  --popover-foreground: hsl(45, 20%, 88%);
+  --primary: hsl(20, 70%, 50%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(45, 20%, 88%);
+  --secondary-foreground: hsl(25, 15%, 12%);
+  --muted: hsl(25, 15%, 15%);
+  --muted-foreground: hsl(45, 15%, 60%);
+  --accent: hsl(85, 25%, 50%);
+  --accent-foreground: hsl(45, 20%, 88%);
+  --destructive: hsl(0, 70%, 55%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --border: hsl(25, 15%, 18%);
+  --input: hsl(25, 15%, 20%);
+  --ring: hsl(20, 70%, 50%);
+
+  --cafe-brown: hsl(20, 60%, 45%);
+  --cafe-dark-brown: hsl(20, 50%, 35%);
+  --cafe-cream: hsl(45, 25%, 20%);
+  --cafe-orange: hsl(25, 75%, 60%);
+  --cafe-green: hsl(85, 25%, 50%);
+  --cafe-light: hsl(25, 15%, 12%);
+  --cafe-dark: hsl(45, 20%, 88%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    direction: rtl;
+  }
+
+  html {
+    direction: rtl;
+  }
+
+  /* Persian number styles */
+  .persian-numbers {
+    font-feature-settings: "kern" off;
+  }
+
+  /* Custom scrollbar for RTL */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-muted;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-md;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--primary);
+    opacity: 0.6;
+  }
+}
+
+@layer components {
+  .cafe-brown {
+    color: var(--cafe-brown);
+  }
+
+  .bg-cafe-brown {
+    background-color: var(--cafe-brown);
+  }
+
+  .cafe-dark-brown {
+    color: var(--cafe-dark-brown);
+  }
+
+  .bg-cafe-dark-brown {
+    background-color: var(--cafe-dark-brown);
+  }
+
+  .cafe-cream {
+    color: var(--cafe-cream);
+  }
+
+  .bg-cafe-cream {
+    background-color: var(--cafe-cream);
+  }
+
+  .cafe-orange {
+    color: var(--cafe-orange);
+  }
+
+  .bg-cafe-orange {
+    background-color: var(--cafe-orange);
+  }
+
+  .cafe-green {
+    color: var(--cafe-green);
+  }
+
+  .bg-cafe-green {
+    background-color: var(--cafe-green);
+  }
+
+  .cafe-light {
+    color: var(--cafe-light);
+  }
+
+  .bg-cafe-light {
+    background-color: var(--cafe-light);
+  }
+
+  .cafe-dark {
+    color: var(--cafe-dark);
+  }
+
+  .bg-cafe-dark {
+    background-color: var(--cafe-dark);
+  }
+}
