@@ -21,33 +21,36 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-white shadow-lg sticky top-0 z-50">
+    <nav className="bg-white dark:bg-cafe-espresso shadow-lg sticky top-0 z-50 border-b border-cafe-cream dark:border-cafe-mocha">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <Link to="/" className="flex-shrink-0 flex items-center hover:opacity-80 transition-opacity">
-            <BookOpen className="text-cafe-brown text-2xl ml-2" />
-            <span className="text-xl font-bold text-cafe-brown font-serif">باشگاه کتاب کافه</span>
+          <Link to="/" className="flex-shrink-0 flex items-center hover:opacity-80 transition-opacity group">
+            <BookOpen className="text-cafe-mocha dark:text-cafe-caramel text-3xl ml-3 group-hover:text-cafe-caramel dark:group-hover:text-cafe-golden transition-colors" />
+            <span className="text-2xl font-bold text-cafe-mocha dark:text-cafe-warm-white font-serif group-hover:text-cafe-caramel dark:group-hover:text-cafe-golden transition-colors">
+              باشگاه کتاب کافه
+            </span>
           </Link>
           
           {/* Desktop Navigation */}
           <div className="hidden md:block">
-            <div className="flex items-center space-x-4 space-x-reverse">
+            <div className="flex items-center gap-8">
               {navigationItems.map((item) => (
                 <Link key={item.href} to={item.href}>
                   <Button
                     variant="ghost"
-                    className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    size="lg"
+                    className={`px-6 py-3 rounded-xl text-base font-medium transition-all duration-300 hover:scale-105 ${
                       isActive(item.href)
-                        ? "text-cafe-brown bg-cafe-cream"
-                        : "text-cafe-dark hover:text-cafe-brown hover:bg-cafe-cream"
+                        ? "text-cafe-warm-white bg-cafe-caramel shadow-lg"
+                        : "text-cafe-rich-brown dark:text-cafe-latte hover:text-cafe-warm-white hover:bg-cafe-cinnamon dark:hover:bg-cafe-mocha"
                     }`}
                   >
                     {item.label}
                   </Button>
                 </Link>
               ))}
-              <Button className="bg-cafe-brown text-white hover:bg-cafe-dark-brown">
+              <Button className="bg-cafe-warm-gradient text-white hover:shadow-lg hover:scale-105 transition-all duration-300 px-6 py-3 rounded-xl text-base font-medium">
                 ورود / ثبت نام
               </Button>
             </div>
@@ -57,35 +60,36 @@ export default function Navbar() {
           <div className="md:hidden">
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="sm" className="text-cafe-brown hover:text-cafe-orange">
-                  <Menu className="h-6 w-6" />
+                <Button variant="ghost" size="sm" className="text-cafe-mocha dark:text-cafe-caramel hover:text-cafe-caramel dark:hover:text-cafe-golden">
+                  <Menu className="h-7 w-7" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] bg-white">
-                <div className="flex items-center mb-8 mt-4">
-                  <BookOpen className="text-cafe-brown text-2xl ml-2" />
-                  <span className="text-xl font-bold text-cafe-brown font-serif">باشگاه کتاب کافه</span>
+              <SheetContent side="right" className="w-[350px] bg-white dark:bg-cafe-espresso border-l border-cafe-cream dark:border-cafe-mocha">
+                <div className="flex items-center mb-10 mt-6">
+                  <BookOpen className="text-cafe-mocha dark:text-cafe-caramel text-3xl ml-3" />
+                  <span className="text-2xl font-bold text-cafe-mocha dark:text-cafe-warm-white font-serif">باشگاه کتاب کافه</span>
                 </div>
                 
-                <div className="flex flex-col space-y-4">
+                <div className="flex flex-col space-y-5">
                   {navigationItems.map((item) => (
                     <Link key={item.href} to={item.href}>
                       <Button
                         variant="ghost"
-                        className={`w-full justify-start text-right ${
+                        size="lg"
+                        className={`w-full justify-start text-right px-6 py-4 rounded-xl transition-all duration-300 ${
                           isActive(item.href)
-                            ? "text-cafe-brown bg-cafe-cream"
-                            : "text-cafe-dark hover:text-cafe-brown hover:bg-cafe-cream"
+                            ? "text-cafe-warm-white bg-cafe-caramel shadow-lg"
+                            : "text-cafe-rich-brown dark:text-cafe-latte hover:text-cafe-warm-white hover:bg-cafe-cinnamon dark:hover:bg-cafe-mocha"
                         }`}
                         onClick={() => setIsOpen(false)}
                       >
-                        <item.icon className="w-4 h-4 ml-2" />
-                        {item.label}
+                        <item.icon className="w-5 h-5 ml-3" />
+                        <span className="text-lg">{item.label}</span>
                       </Button>
                     </Link>
                   ))}
                   
-                  <Button className="bg-cafe-brown text-white hover:bg-cafe-dark-brown mt-4">
+                  <Button className="bg-cafe-warm-gradient text-white hover:shadow-lg mt-6 px-6 py-4 rounded-xl text-lg font-medium">
                     ورود / ثبت نام
                   </Button>
                 </div>

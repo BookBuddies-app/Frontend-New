@@ -3,69 +3,77 @@
 @tailwind utilities;
 
 :root {
-  --background: hsl(38, 19%, 97%);
-  --foreground: hsl(25, 16%, 29%);
-  --card: hsl(45, 20%, 96%);
-  --card-foreground: hsl(25, 16%, 29%);
+  /* Enhanced warm café color palette */
+  --background: hsl(42, 25%, 98%);
+  --foreground: hsl(20, 14%, 20%);
+  --card: hsl(42, 20%, 96%);
+  --card-foreground: hsl(20, 14%, 20%);
   --popover: hsl(0, 0%, 100%);
-  --popover-foreground: hsl(25, 16%, 29%);
-  --primary: hsl(20, 70%, 50%);
+  --popover-foreground: hsl(20, 14%, 20%);
+  --primary: hsl(20, 65%, 48%);
   --primary-foreground: hsl(0, 0%, 100%);
-  --secondary: hsl(25, 16%, 29%);
-  --secondary-foreground: hsl(0, 0%, 100%);
-  --muted: hsl(45, 30%, 92%);
-  --muted-foreground: hsl(25, 16%, 29%);
-  --accent: hsl(85, 20%, 60%);
-  --accent-foreground: hsl(25, 16%, 29%);
-  --destructive: hsl(0, 70%, 55%);
+  --secondary: hsl(42, 15%, 88%);
+  --secondary-foreground: hsl(20, 14%, 20%);
+  --muted: hsl(42, 18%, 92%);
+  --muted-foreground: hsl(20, 8%, 45%);
+  --accent: hsl(35, 85%, 58%);
+  --accent-foreground: hsl(0, 0%, 100%);
+  --destructive: hsl(0, 65%, 52%);
   --destructive-foreground: hsl(0, 0%, 100%);
-  --border: hsl(45, 25%, 88%);
-  --input: hsl(45, 25%, 94%);
-  --ring: hsl(20, 70%, 50%);
+  --border: hsl(42, 20%, 85%);
+  --input: hsl(42, 25%, 94%);
+  --ring: hsl(20, 65%, 48%);
 
-  /* Café color palette */
-  --cafe-brown: hsl(20, 60%, 35%);
-  --cafe-dark-brown: hsl(20, 50%, 25%);
-  --cafe-cream: hsl(45, 35%, 88%);
-  --cafe-orange: hsl(25, 75%, 55%);
-  --cafe-green: hsl(85, 25%, 60%);
-  --cafe-light: hsl(45, 25%, 96%);
-  --cafe-dark: hsl(25, 15%, 29%);
+  /* Rich café color palette */
+  --cafe-espresso: hsl(20, 40%, 25%);
+  --cafe-mocha: hsl(25, 50%, 35%);
+  --cafe-latte: hsl(35, 60%, 75%);
+  --cafe-cream: hsl(42, 35%, 88%);
+  --cafe-caramel: hsl(35, 85%, 58%);
+  --cafe-cinnamon: hsl(25, 70%, 55%);
+  --cafe-warm-white: hsl(42, 25%, 98%);
+  --cafe-rich-brown: hsl(20, 45%, 30%);
+  --cafe-golden: hsl(45, 80%, 65%);
+  --cafe-sage: hsl(85, 25%, 60%);
 
-  --font-sans: 'Vazirmatn', 'Estedad', sans-serif;
-  --font-serif: 'Estedad', Georgia, serif;
-  --font-mono: Menlo, monospace;
+  --font-sans: 'Vazirmatn', 'Estedad', system-ui, sans-serif;
+  --font-serif: 'Estedad', 'Vazirmatn', Georgia, serif;
+  --font-mono: 'Consolas', 'Monaco', monospace;
   --radius: 0.75rem;
 }
 
 .dark {
-  --background: hsl(25, 15%, 8%);
-  --foreground: hsl(45, 20%, 88%);
-  --card: hsl(25, 15%, 12%);
-  --card-foreground: hsl(45, 20%, 88%);
-  --popover: hsl(25, 15%, 8%);
-  --popover-foreground: hsl(45, 20%, 88%);
-  --primary: hsl(20, 70%, 50%);
+  --background: hsl(20, 20%, 8%);
+  --foreground: hsl(42, 25%, 90%);
+  --card: hsl(20, 20%, 12%);
+  --card-foreground: hsl(42, 25%, 90%);
+  --popover: hsl(20, 20%, 8%);
+  --popover-foreground: hsl(42, 25%, 90%);
+  --primary: hsl(20, 65%, 55%);
   --primary-foreground: hsl(0, 0%, 100%);
-  --secondary: hsl(45, 20%, 88%);
-  --secondary-foreground: hsl(25, 15%, 12%);
-  --muted: hsl(25, 15%, 15%);
-  --muted-foreground: hsl(45, 15%, 60%);
-  --accent: hsl(85, 25%, 50%);
-  --accent-foreground: hsl(45, 20%, 88%);
-  --destructive: hsl(0, 70%, 55%);
+  --secondary: hsl(20, 15%, 18%);
+  --secondary-foreground: hsl(42, 25%, 90%);
+  --muted: hsl(20, 15%, 15%);
+  --muted-foreground: hsl(42, 15%, 65%);
+  --accent: hsl(35, 85%, 65%);
+  --accent-foreground: hsl(20, 20%, 8%);
+  --destructive: hsl(0, 65%, 55%);
   --destructive-foreground: hsl(0, 0%, 100%);
-  --border: hsl(25, 15%, 18%);
-  --input: hsl(25, 15%, 20%);
-  --ring: hsl(20, 70%, 50%);
+  --border: hsl(20, 15%, 18%);
+  --input: hsl(20, 15%, 20%);
+  --ring: hsl(20, 65%, 55%);
 
-  --cafe-brown: hsl(20, 60%, 45%);
-  --cafe-dark-brown: hsl(20, 50%, 35%);
-  --cafe-cream: hsl(45, 25%, 20%);
-  --cafe-orange: hsl(25, 75%, 60%);
-  --cafe-green: hsl(85, 25%, 50%);
-  --cafe-light: hsl(25, 15%, 12%);
-  --cafe-dark: hsl(45, 20%, 88%);
+  /* Dark theme café colors */
+  --cafe-espresso: hsl(20, 50%, 35%);
+  --cafe-mocha: hsl(25, 60%, 45%);
+  --cafe-latte: hsl(35, 40%, 45%);
+  --cafe-cream: hsl(20, 15%, 18%);
+  --cafe-caramel: hsl(35, 85%, 65%);
+  --cafe-cinnamon: hsl(25, 70%, 65%);
+  --cafe-warm-white: hsl(42, 25%, 90%);
+  --cafe-rich-brown: hsl(20, 45%, 40%);
+  --cafe-golden: hsl(45, 80%, 70%);
+  --cafe-sage: hsl(85, 25%, 55%);
 }
 
 @layer base {
@@ -108,59 +116,53 @@
 }
 
 @layer components {
-  .cafe-brown {
-    color: var(--cafe-brown);
-  }
+  /* Enhanced café color utilities */
+  .text-cafe-espresso { color: var(--cafe-espresso); }
+  .bg-cafe-espresso { background-color: var(--cafe-espresso); }
+  .border-cafe-espresso { border-color: var(--cafe-espresso); }
+  
+  .text-cafe-mocha { color: var(--cafe-mocha); }
+  .bg-cafe-mocha { background-color: var(--cafe-mocha); }
+  .border-cafe-mocha { border-color: var(--cafe-mocha); }
+  
+  .text-cafe-latte { color: var(--cafe-latte); }
+  .bg-cafe-latte { background-color: var(--cafe-latte); }
+  .border-cafe-latte { border-color: var(--cafe-latte); }
+  
+  .text-cafe-cream { color: var(--cafe-cream); }
+  .bg-cafe-cream { background-color: var(--cafe-cream); }
+  .border-cafe-cream { border-color: var(--cafe-cream); }
+  
+  .text-cafe-caramel { color: var(--cafe-caramel); }
+  .bg-cafe-caramel { background-color: var(--cafe-caramel); }
+  .border-cafe-caramel { border-color: var(--cafe-caramel); }
+  
+  .text-cafe-cinnamon { color: var(--cafe-cinnamon); }
+  .bg-cafe-cinnamon { background-color: var(--cafe-cinnamon); }
+  .border-cafe-cinnamon { border-color: var(--cafe-cinnamon); }
+  
+  .text-cafe-warm-white { color: var(--cafe-warm-white); }
+  .bg-cafe-warm-white { background-color: var(--cafe-warm-white); }
+  .border-cafe-warm-white { border-color: var(--cafe-warm-white); }
+  
+  .text-cafe-rich-brown { color: var(--cafe-rich-brown); }
+  .bg-cafe-rich-brown { background-color: var(--cafe-rich-brown); }
+  .border-cafe-rich-brown { border-color: var(--cafe-rich-brown); }
+  
+  .text-cafe-golden { color: var(--cafe-golden); }
+  .bg-cafe-golden { background-color: var(--cafe-golden); }
+  .border-cafe-golden { border-color: var(--cafe-golden); }
+  
+  .text-cafe-sage { color: var(--cafe-sage); }
+  .bg-cafe-sage { background-color: var(--cafe-sage); }
+  .border-cafe-sage { border-color: var(--cafe-sage); }
 
-  .bg-cafe-brown {
-    background-color: var(--cafe-brown);
+  /* Gradient backgrounds */
+  .bg-cafe-gradient {
+    background: linear-gradient(135deg, var(--cafe-cream) 0%, var(--cafe-latte) 100%);
   }
-
-  .cafe-dark-brown {
-    color: var(--cafe-dark-brown);
-  }
-
-  .bg-cafe-dark-brown {
-    background-color: var(--cafe-dark-brown);
-  }
-
-  .cafe-cream {
-    color: var(--cafe-cream);
-  }
-
-  .bg-cafe-cream {
-    background-color: var(--cafe-cream);
-  }
-
-  .cafe-orange {
-    color: var(--cafe-orange);
-  }
-
-  .bg-cafe-orange {
-    background-color: var(--cafe-orange);
-  }
-
-  .cafe-green {
-    color: var(--cafe-green);
-  }
-
-  .bg-cafe-green {
-    background-color: var(--cafe-green);
-  }
-
-  .cafe-light {
-    color: var(--cafe-light);
-  }
-
-  .bg-cafe-light {
-    background-color: var(--cafe-light);
-  }
-
-  .cafe-dark {
-    color: var(--cafe-dark);
-  }
-
-  .bg-cafe-dark {
-    background-color: var(--cafe-dark);
+  
+  .bg-cafe-warm-gradient {
+    background: linear-gradient(135deg, var(--cafe-caramel) 0%, var(--cafe-cinnamon) 100%);
   }
 }

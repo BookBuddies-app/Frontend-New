@@ -14,35 +14,35 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-cafe-cream min-h-screen flex items-center">
+      <section className="relative bg-cafe-gradient dark:bg-cafe-espresso min-h-screen flex items-center">
         <div
-          className="absolute inset-0 bg-cover bg-center opacity-20"
+          className="absolute inset-0 bg-cover bg-center opacity-10 dark:opacity-5"
           style={{
             backgroundImage: "url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080')"
           }}
         />
         
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-cafe-brown mb-6 font-serif">
+        <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 text-center">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-cafe-espresso dark:text-cafe-warm-white mb-8 font-serif leading-tight">
             باشگاه کتاب کافه
           </h1>
-          <p className="text-lg md:text-xl text-cafe-dark-brown mb-8 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl md:text-2xl text-cafe-rich-brown dark:text-cafe-latte mb-12 max-w-4xl mx-auto leading-relaxed">
             جایی دنج برای عاشقان کتاب. هر هفته در فضایی گرم و صمیمی دور هم جمع می‌شویم تا درباره کتاب‌های جذاب گفتگو کنیم و قهوه‌ای خوشمزه بنوشیم.
           </p>
           
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-6">
             <Link to="/events">
-              <Button size="lg" className="bg-cafe-brown hover:bg-cafe-dark-brown text-white px-8 py-3 text-lg">
-                <Calendar className="w-5 h-5 ml-2" />
+              <Button size="lg" className="bg-cafe-warm-gradient hover:shadow-xl hover:scale-105 transition-all duration-300 text-white px-10 py-4 text-xl rounded-xl">
+                <Calendar className="w-6 h-6 ml-3" />
                 مشاهده رویدادها
               </Button>
             </Link>
             <Button
               variant="outline"
               size="lg"
-              className="border-2 border-cafe-brown text-cafe-brown hover:bg-cafe-brown hover:text-white px-8 py-3 text-lg"
+              className="border-2 border-cafe-mocha dark:border-cafe-caramel text-cafe-mocha dark:text-cafe-caramel hover:bg-cafe-mocha hover:text-white dark:hover:bg-cafe-caramel dark:hover:text-cafe-espresso px-10 py-4 text-xl rounded-xl transition-all duration-300"
             >
-              <BookOpen className="w-5 h-5 ml-2" />
+              <BookOpen className="w-6 h-6 ml-3" />
               درباره ما بیشتر بدانید
             </Button>
           </div>
@@ -50,11 +50,11 @@ export default function Home() {
       </section>
 
       {/* Upcoming Events Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-cafe-brown mb-4 font-serif">رویدادهای آینده</h2>
-            <p className="text-lg text-cafe-dark max-w-2xl mx-auto">
+      <section className="py-20 bg-white dark:bg-cafe-espresso">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-cafe-mocha dark:text-cafe-warm-white mb-6 font-serif">رویدادهای آینده</h2>
+            <p className="text-xl text-cafe-rich-brown dark:text-cafe-latte max-w-3xl mx-auto leading-relaxed">
               به باشگاه کتاب ما بپیوندید و در جلسات هفتگی شرکت کنید
             </p>
           </div>
@@ -81,10 +81,10 @@ export default function Home() {
             </div>
           )}
 
-          <div className="text-center mt-12">
+          <div className="text-center mt-16">
             <Link to="/events">
-              <Button className="bg-cafe-orange hover:bg-orange-600 text-white px-8 py-3">
-                <Calendar className="w-5 h-5 ml-2" />
+              <Button className="bg-cafe-caramel hover:bg-cafe-cinnamon hover:shadow-lg hover:scale-105 transition-all duration-300 text-white px-10 py-4 text-lg rounded-xl">
+                <Calendar className="w-6 h-6 ml-3" />
                 مشاهده همه رویدادها
               </Button>
             </Link>
@@ -93,31 +93,31 @@ export default function Home() {
       </section>
 
       {/* About Section */}
-      <section className="py-16 bg-cafe-cream">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <section className="py-20 bg-cafe-cream dark:bg-cafe-mocha">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-cafe-brown mb-6 font-serif">درباره باشگاه کتاب کافه</h2>
-              <p className="text-lg text-cafe-dark mb-6 leading-relaxed">
+              <h2 className="text-4xl md:text-5xl font-bold text-cafe-espresso dark:text-cafe-warm-white mb-8 font-serif">درباره باشگاه کتاب کافه</h2>
+              <p className="text-xl text-cafe-rich-brown dark:text-cafe-latte mb-8 leading-relaxed">
                 باشگاه کتاب کافه مکانی است برای عاشقان کتاب که می‌خواهند در فضایی گرم و دوستانه درباره کتاب‌های مورد علاقه‌شان صحبت کنند. ما هر هفته در کافه دنجی جمع می‌شویم تا با نوشیدن قهوه‌ای خوشمزه، درباره آثار ادبی بحث و تبادل نظر کنیم.
               </p>
               
-              <div className="space-y-4">
-                <div className="flex items-center">
-                  <BookOpen className="text-cafe-brown text-xl ml-3" />
-                  <span className="text-cafe-dark">انواع مختلف کتاب: رمان، شعر، داستان کوتاه</span>
+              <div className="space-y-6">
+                <div className="flex items-center group hover:bg-white dark:hover:bg-cafe-espresso p-4 rounded-xl transition-colors">
+                  <BookOpen className="text-cafe-caramel text-2xl ml-4 group-hover:text-cafe-cinnamon transition-colors" />
+                  <span className="text-cafe-rich-brown dark:text-cafe-latte text-lg">انواع مختلف کتاب: رمان، شعر، داستان کوتاه</span>
                 </div>
-                <div className="flex items-center">
-                  <Users className="text-cafe-brown text-xl ml-3" />
-                  <span className="text-cafe-dark">جمع کوچک و صمیمی (حداکثر ۱۵ نفر)</span>
+                <div className="flex items-center group hover:bg-white dark:hover:bg-cafe-espresso p-4 rounded-xl transition-colors">
+                  <Users className="text-cafe-caramel text-2xl ml-4 group-hover:text-cafe-cinnamon transition-colors" />
+                  <span className="text-cafe-rich-brown dark:text-cafe-latte text-lg">جمع کوچک و صمیمی (حداکثر ۱۵ نفر)</span>
                 </div>
-                <div className="flex items-center">
-                  <Coffee className="text-cafe-brown text-xl ml-3" />
-                  <span className="text-cafe-dark">فضای گرم و دنج کافه</span>
+                <div className="flex items-center group hover:bg-white dark:hover:bg-cafe-espresso p-4 rounded-xl transition-colors">
+                  <Coffee className="text-cafe-caramel text-2xl ml-4 group-hover:text-cafe-cinnamon transition-colors" />
+                  <span className="text-cafe-rich-brown dark:text-cafe-latte text-lg">فضای گرم و دنج کافه</span>
                 </div>
-                <div className="flex items-center">
-                  <Calendar className="text-cafe-brown text-xl ml-3" />
-                  <span className="text-cafe-dark">جلسات هفتگی منظم</span>
+                <div className="flex items-center group hover:bg-white dark:hover:bg-cafe-espresso p-4 rounded-xl transition-colors">
+                  <Calendar className="text-cafe-caramel text-2xl ml-4 group-hover:text-cafe-cinnamon transition-colors" />
+                  <span className="text-cafe-rich-brown dark:text-cafe-latte text-lg">جلسات هفتگی منظم</span>
                 </div>
               </div>
             </div>
@@ -141,23 +141,23 @@ export default function Home() {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-16 bg-cafe-brown">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-white mb-4 font-serif">از جدیدترین رویدادها باخبر شوید</h2>
-          <p className="text-cafe-cream text-lg mb-8">
+      <section className="py-20 bg-cafe-warm-gradient">
+        <div className="max-w-5xl mx-auto text-center px-6 sm:px-8 lg:px-12">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 font-serif">از جدیدترین رویدادها باخبر شوید</h2>
+          <p className="text-cafe-warm-white text-xl mb-12 max-w-3xl mx-auto leading-relaxed">
             ایمیل خود را وارد کنید تا از برنامه‌های جدید باشگاه کتاب مطلع شوید
           </p>
           
-          <form className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+          <form className="flex flex-col sm:flex-row gap-6 max-w-2xl mx-auto">
             <input
               type="email"
               placeholder="آدرس ایمیل شما"
-              className="flex-1 px-4 py-3 rounded-lg text-cafe-dark focus:ring-2 focus:ring-cafe-orange focus:outline-none"
+              className="flex-1 px-6 py-4 rounded-xl text-cafe-rich-brown text-lg focus:ring-2 focus:ring-cafe-golden focus:outline-none shadow-lg"
               required
             />
             <Button
               type="submit"
-              className="bg-cafe-orange hover:bg-orange-600 text-white px-6 py-3"
+              className="bg-white text-cafe-cinnamon hover:bg-cafe-golden hover:text-white hover:shadow-xl transition-all duration-300 px-8 py-4 text-lg rounded-xl font-medium"
             >
               عضویت
             </Button>
