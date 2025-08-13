@@ -2,6 +2,24 @@
 
 A Persian-language book club café application built with React, Express, and TypeScript with full RTL support.
 
+## Prerequisites
+
+**Required Node.js Version: 20.11.0 or higher**
+
+This project uses `import.meta.dirname` which requires Node.js v20.11+. If you're getting path resolution errors, upgrade your Node.js version:
+
+```bash
+# Check your current version
+node --version
+
+# If you see v18.x.x or older, upgrade to Node.js v20+
+# Using nvm (recommended):
+nvm install 20
+nvm use 20
+
+# Or download from: https://nodejs.org/en/download/
+```
+
 ## Quick Start
 
 ### Option 1: Run from Root Directory (Recommended)
@@ -35,12 +53,17 @@ This is a monorepo with the following structure:
 
 ### Error: "paths[0] argument must be of type string. Received undefined"
 
-This error occurs when running commands from the wrong directory. The vite.config.ts file is configured to work from the project root.
+This error occurs due to Node.js version incompatibility. The project uses `import.meta.dirname` which requires Node.js v20.11+.
 
 **Solutions:**
-1. Always run commands from the root directory (not from client folder)
-2. Use the client/package.json which redirects commands to root
-3. Ensure you're in the correct directory before running npm commands
+1. **Upgrade Node.js to v20.11.0 or higher** (Required)
+2. Ensure you're running commands from the project root directory
+3. Restart your terminal/IDE after upgrading Node.js
+
+**If you're still getting errors after upgrading Node.js:**
+- Clear node_modules: `rm -rf node_modules package-lock.json && npm install`
+- Restart your terminal completely
+- Verify Node.js version: `node --version` should show v20.x.x or higher
 
 ### Development Notes
 
