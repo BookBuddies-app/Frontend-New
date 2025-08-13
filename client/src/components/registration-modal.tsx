@@ -85,6 +85,23 @@ export default function RegistrationModal({ isOpen, onClose, event }: Registrati
 
   const onSubmit = (data: FormData) => {
     const { terms, ...registrationData } = data;
+    
+    // Store registration in localStorage for profile tracking
+    const storedRegistrations = JSON.parse(localStorage.getItem("userRegistrations") || "[]");
+    const newRegistration = {
+      id: event.id,
+      bookTitle: event.bookTitle,
+      author: event.author,
+      date: event.date,
+      time: event.time,
+      location: "کافه کتاب", // Default location
+      category: event.category,
+      registeredAt: new Date().toISOString(),
+      ...registrationData,
+    };
+    storedRegistrations.push(newRegistration);
+    localStorage.setItem("userRegistrations", JSON.stringify(storedRegistrations));
+    
     registerMutation.mutate({
       ...registrationData,
       eventId: event.id,
@@ -242,7 +259,7 @@ export default function RegistrationModal({ isOpen, onClose, event }: Registrati
             
             <Button
               type="submit"
-              className="w-full bg-cafe-brown hover:bg-cafe-dark-brown text-white font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
+              className="w-full bg-cafe-caramel hover:bg-cafe-cinnamon text-white font-medium disabled:bg-gray-300 disabled:cursor-not-allowed disabled:text-gray-500"
               disabled={registerMutation.isPending || !form.formState.isValid || !form.watch("terms")}
             >
               {registerMutation.isPending ? (

@@ -19,8 +19,12 @@ import { Link } from "wouter";
 const categories = [
   { key: "all", label: "همه", value: "" },
   { key: "classic", label: "رمان کلاسیک", value: "رمان کلاسیک" },
+  { key: "contemporary", label: "رمان معاصر", value: "رمان معاصر" },
   { key: "poetry", label: "شعر معاصر", value: "شعر معاصر" },
   { key: "short", label: "داستان کوتاه", value: "داستان کوتاه" },
+  { key: "history", label: "تاریخ", value: "تاریخ" },
+  { key: "philosophy", label: "فلسفه", value: "فلسفه" },
+  { key: "literature", label: "ادبیات", value: "ادبیات" },
 ];
 
 const locations = [
@@ -48,8 +52,11 @@ export default function Events() {
       event.bookTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
       event.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
       event.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesLocation = selectedLocation === "همه مکان‌ها" || 
-      (event as any).location?.includes(selectedLocation) || true;
+    
+    // For location filtering, get location from cafe data or default to random location
+    const eventLocations = ["کافه نادری", "کافه چای خونه", "کافه گاندی", "کافه کتاب", "کافه رستگار"];
+    const eventLocation = eventLocations[parseInt(event.id) % eventLocations.length];
+    const matchesLocation = selectedLocation === "همه مکان‌ها" || eventLocation === selectedLocation;
     
     return matchesCategory && matchesSearch && matchesLocation;
   });

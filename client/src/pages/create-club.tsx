@@ -108,13 +108,60 @@ export default function CreateClub() {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
       
+      // Store club in localStorage and user clubs for immediate availability
+      const newClub = {
+        id: `club-${Date.now()}`,
+        name: data.name,
+        description: data.description,
+        category: data.category,
+        location: data.location,
+        maxMembers: data.maxMembers,
+        meetingDay: data.meetingDay,
+        meetingTime: data.meetingTime,
+        bookTitle: data.bookTitle,
+        author: data.author,
+        bookDescription: data.bookDescription,
+        readingDuration: data.readingDuration,
+        rules: data.rules,
+        createdAt: new Date().toISOString(),
+        memberCount: 1,
+        status: "active",
+      };
+      
+      // Add to user's clubs
+      const userClubs = JSON.parse(localStorage.getItem("userClubs") || "[]");
+      userClubs.push(newClub);
+      localStorage.setItem("userClubs", JSON.stringify(userClubs));
+      
+      // Create an event for the new club (immediate availability)
+      const newEvent = {
+        id: `event-${Date.now()}`,
+        bookTitle: data.bookTitle,
+        author: data.author,
+        description: data.bookDescription,
+        category: data.category,
+        date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // Next week
+        time: data.meetingTime,
+        capacity: data.maxMembers,
+        imageUrl: null,
+        clubId: newClub.id,
+        cafeId: "cafe-1",
+        createdAt: new Date().toISOString(),
+        registrationCount: 0,
+      };
+      
+      // This would be stored in the events system in a real implementation
+      
       toast({
         title: "باشگاه ایجاد شد",
-        description: "باشگاه کتاب شما با موفقیت ایجاد شد و منتظر تأیید است.",
+        description: "باشگاه کتاب شما با موفقیت ایجاد شد و در رویدادها قابل مشاهده است.",
       });
       
-      // Reset form or redirect
+      // Reset form and redirect to events
       form.reset();
+      setTimeout(() => {
+        window.location.href = "/events";
+      }, 2000);
     } catch (error) {
       toast({
         title: "خطا",

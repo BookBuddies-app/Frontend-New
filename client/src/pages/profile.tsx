@@ -1,10 +1,17 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { 
   User, 
   BookOpen, 
@@ -15,84 +22,146 @@ import {
   Edit, 
   Settings,
   Clock,
-  MapPin
+  MapPin,
+  Eye,
+  UserMinus,
+  Save,
+  X
 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
 import { formatPersianDate } from "@/lib/persian-utils";
 
-// Mock user data - in real implementation this would come from backend
-const mockUser = {
-  id: "1",
-  fullName: "سارا احمدی",
-  email: "sara@example.com",
-  phone: "09123456789",
-  joinDate: "2024-01-15",
-  avatar: null,
-  stats: {
-    eventsAttended: 12,
-    booksRead: 18,
-    discussionsJoined: 24,
-    favoriteGenre: "رمان معاصر"
-  }
-};
-
-const mockMyEvents = [
-  {
-    id: "1",
-    bookTitle: "بوف کور",
-    author: "صادق هدایت",
-    date: "2024-08-20",
-    time: "18:00",
-    status: "upcoming",
-    location: "کافه نادری"
-  },
-  {
-    id: "2",
-    bookTitle: "سووشون",
-    author: "سیمین دانشور",
-    date: "2024-08-05",
-    time: "18:00",
-    status: "attended",
-    location: "کافه چای خونه"
-  },
-  {
-    id: "3",
-    bookTitle: "داستان شهر من",
-    author: "غلامحسین ساعدی",
-    date: "2024-07-22",
-    time: "18:00",
-    status: "attended",
-    location: "کافه نادری"
-  }
-];
-
-const mockMyClubs = [
-  {
-    id: "1",
-    name: "باشگاه عاشقان شعر",
-    description: "جلسات هفتگی برای بحث درباره شعر کلاسیک و معاصر",
-    memberCount: 24,
-    joinDate: "2024-01-15",
-    nextMeeting: "2024-08-25",
-    status: "active"
-  },
-  {
-    id: "2",
-    name: "حلقه رمان معاصر",
-    description: "مطالعه و تحلیل رمان‌های معاصر ایرانی",
-    memberCount: 18,
-    joinDate: "2024-02-20",
-    nextMeeting: "2024-08-27",
-    status: "active"
-  }
-];
+// Profile edit schema
+const profileEditSchema = z.object({
+  fullName: z.string().min(2, "نام باید حداقل ۲ کاراکتر باشد"),
+  phone: z.string().min(11, "شماره تلفن معتبر وارد کنید").optional(),
+});
 
 export default function Profile() {
   const [activeTab, setActiveTab] = useState("overview");
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
-  // In real implementation, use actual API calls
-  // const { data: user } = useQuery({ queryKey: ['/api/user/profile'] });
-  // const { data: myEvents } = useQuery({ queryKey: ['/api/user/events'] });
-  // const { data: myClubs } = useQuery({ queryKey: ['/api/user/clubs'] });
+  // Get user data from localStorage and API
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      setUser(JSON.parse(userData));
+    }
+  }, []);
+
+  // Get user's registered events
+  const { data: userRegistrations = [], isLoading: registrationsLoading } = useQuery({
+    queryKey: ["/api/user/registrations"],
+    queryFn: async () => {
+      // Mock API - in real implementation this would fetch user's registrations
+      const storedRegistrations = localStorage.getItem("userRegistrations");
+      return storedRegistrations ? JSON.parse(storedRegistrations) : [];
+    },
+    enabled: !!user
+  });
+
+  // Get user's clubs
+  const { data: userClubs = [], isLoading: clubsLoading } = useQuery({
+    queryKey: ["/api/user/clubs"],
+    queryFn: async () => {
+      // Mock API - in real implementation this would fetch user's clubs
+      const storedClubs = localStorage.getItem("userClubs");
+      return storedClubs ? JSON.parse(storedClubs) : [];
+    },
+    enabled: !!user
+  });
+
+  // Profile edit form
+  const form = useForm({
+    resolver: zodResolver(profileEditSchema),
+    defaultValues: {
+      fullName: user?.fullName || "",
+      phone: user?.phone || "",
+    },
+  });
+
+  // Update form when user data changes
+  useEffect(() => {
+    if (user) {
+      form.reset({
+        fullName: user.fullName || "",
+        phone: user.phone || "",
+      });
+    }
+  }, [user, form]);
+
+  const updateProfileMutation = useMutation({
+    mutationFn: async (data: any) => {
+      // Update localStorage
+      const updatedUser = { ...user, ...data };
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      setUser(updatedUser);
+      return updatedUser;
+    },
+    onSuccess: () => {
+      toast({
+        title: "پروفایل بروزرسانی شد",
+        description: "اطلاعات شما با موفقیت ذخیره شد.",
+      });
+      setIsEditDialogOpen(false);
+    },
+    onError: () => {
+      toast({
+        title: "خطا",
+        description: "خطا در بروزرسانی پروفایل",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const leaveClubMutation = useMutation({
+    mutationFn: async (clubId: string) => {
+      // Remove from localStorage
+      const clubs = JSON.parse(localStorage.getItem("userClubs") || "[]");
+      const updatedClubs = clubs.filter((club: any) => club.id !== clubId);
+      localStorage.setItem("userClubs", JSON.stringify(updatedClubs));
+      return updatedClubs;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/user/clubs"] });
+      toast({
+        title: "خروج از باشگاه",
+        description: "شما با موفقیت از باشگاه خارج شدید.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "خطا",
+        description: "خطا در خروج از باشگاه",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const onSubmitProfile = (data: any) => {
+    updateProfileMutation.mutate(data);
+  };
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-cafe-cream to-white dark:from-cafe-mocha dark:to-cafe-espresso flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-cafe-mocha dark:text-cafe-warm-white mb-4">
+            لطفاً ابتدا وارد شوید
+          </h2>
+          <Link to="/login">
+            <Button className="bg-cafe-warm-gradient text-white">
+              ورود
+            </Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -116,10 +185,19 @@ export default function Profile() {
             <div className="flex flex-col items-center text-center">
               <Avatar className="w-32 h-32 mb-4">
                 <AvatarFallback className="text-3xl bg-cafe-caramel text-white font-bold">
-                  {mockUser.fullName.split(' ').map(name => name[0]).join('')}
+                  {user.fullName.split(' ').map((name: string) => name[0]).join('')}
                 </AvatarFallback>
               </Avatar>
-              <Button variant="outline" className="border-cafe-caramel text-cafe-caramel hover:bg-cafe-caramel hover:text-white">
+              <Button 
+                variant="outline" 
+                className="border-cafe-caramel text-cafe-caramel hover:bg-cafe-caramel hover:text-white"
+                onClick={() => {
+                  toast({
+                    title: "ویرایش تصویر",
+                    description: "این قابلیت به زودی فعال خواهد شد.",
+                  });
+                }}
+              >
                 <Edit className="w-4 h-4 ml-2" />
                 ویرایش تصویر
               </Button>
@@ -129,28 +207,87 @@ export default function Profile() {
               <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                 <div>
                   <h1 className="text-4xl font-bold text-cafe-mocha dark:text-cafe-warm-white mb-4 font-serif">
-                    {mockUser.fullName}
+                    {user.fullName}
                   </h1>
                   <div className="space-y-3 text-cafe-rich-brown dark:text-cafe-latte">
                     <div className="flex items-center">
                       <Mail className="w-5 h-5 ml-3 text-cafe-caramel" />
-                      <span>{mockUser.email}</span>
+                      <span>{user.email}</span>
                     </div>
                     <div className="flex items-center">
                       <Phone className="w-5 h-5 ml-3 text-cafe-caramel" />
-                      <span className="persian-numbers">{mockUser.phone}</span>
+                      <span className="persian-numbers">{user.phone || "تلفن ثبت نشده"}</span>
                     </div>
                     <div className="flex items-center">
                       <Calendar className="w-5 h-5 ml-3 text-cafe-caramel" />
-                      <span>عضو از: {formatPersianDate(new Date(mockUser.joinDate))}</span>
+                      <span>عضو از: {formatPersianDate(new Date())}</span>
                     </div>
                   </div>
                 </div>
                 
-                <Button className="bg-cafe-warm-gradient text-white hover:shadow-lg hover:scale-105 transition-all duration-300">
-                  <Settings className="w-5 h-5 ml-2" />
-                  ویرایش پروفایل
-                </Button>
+                <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button className="bg-cafe-warm-gradient text-white hover:shadow-lg hover:scale-105 transition-all duration-300">
+                      <Settings className="w-5 h-5 ml-2" />
+                      ویرایش پروفایل
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-md" dir="rtl">
+                    <DialogHeader>
+                      <DialogTitle className="text-cafe-mocha dark:text-cafe-warm-white font-serif">
+                        ویرایش پروفایل
+                      </DialogTitle>
+                    </DialogHeader>
+                    <Form {...form}>
+                      <form onSubmit={form.handleSubmit(onSubmitProfile)} className="space-y-4">
+                        <FormField
+                          control={form.control}
+                          name="fullName"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>نام و نام خانوادگی</FormLabel>
+                              <FormControl>
+                                <Input {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="phone"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>شماره تلفن</FormLabel>
+                              <FormControl>
+                                <Input {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <div className="flex gap-2 pt-4">
+                          <Button
+                            type="submit"
+                            className="flex-1 bg-cafe-caramel text-white hover:bg-cafe-cinnamon"
+                            disabled={updateProfileMutation.isPending}
+                          >
+                            <Save className="w-4 h-4 ml-2" />
+                            ذخیره
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => setIsEditDialogOpen(false)}
+                          >
+                            <X className="w-4 h-4 ml-2" />
+                            انصراف
+                          </Button>
+                        </div>
+                      </form>
+                    </Form>
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
           </div>
@@ -162,7 +299,7 @@ export default function Profile() {
             <CardContent className="p-6 text-center">
               <Calendar className="w-12 h-12 text-cafe-caramel mx-auto mb-4" />
               <div className="text-3xl font-bold text-cafe-mocha dark:text-cafe-warm-white persian-numbers mb-2">
-                {mockUser.stats.eventsAttended}
+                {userRegistrations.length}
               </div>
               <div className="text-cafe-rich-brown dark:text-cafe-latte text-sm">رویداد شرکت کرده</div>
             </CardContent>
@@ -172,7 +309,7 @@ export default function Profile() {
             <CardContent className="p-6 text-center">
               <BookOpen className="w-12 h-12 text-cafe-sage mx-auto mb-4" />
               <div className="text-3xl font-bold text-cafe-mocha dark:text-cafe-warm-white persian-numbers mb-2">
-                {mockUser.stats.booksRead}
+                {userRegistrations.length * 2}
               </div>
               <div className="text-cafe-rich-brown dark:text-cafe-latte text-sm">کتاب خوانده</div>
             </CardContent>
@@ -182,7 +319,7 @@ export default function Profile() {
             <CardContent className="p-6 text-center">
               <User className="w-12 h-12 text-cafe-cinnamon mx-auto mb-4" />
               <div className="text-3xl font-bold text-cafe-mocha dark:text-cafe-warm-white persian-numbers mb-2">
-                {mockUser.stats.discussionsJoined}
+                {userClubs.length}
               </div>
               <div className="text-cafe-rich-brown dark:text-cafe-latte text-sm">بحث شرکت کرده</div>
             </CardContent>
@@ -192,7 +329,7 @@ export default function Profile() {
             <CardContent className="p-6 text-center">
               <Trophy className="w-12 h-12 text-cafe-golden mx-auto mb-4" />
               <div className="text-lg font-bold text-cafe-mocha dark:text-cafe-warm-white mb-2">
-                {mockUser.stats.favoriteGenre}
+                رمان معاصر
               </div>
               <div className="text-cafe-rich-brown dark:text-cafe-latte text-sm">ژانر مورد علاقه</div>
             </CardContent>
@@ -222,19 +359,26 @@ export default function Profile() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {mockMyEvents.slice(0, 3).map((event) => (
-                    <div key={event.id} className="flex items-center justify-between p-4 bg-cafe-cream dark:bg-cafe-espresso rounded-xl">
-                      <div>
-                        <div className="font-medium text-cafe-mocha dark:text-cafe-warm-white">
-                          {event.bookTitle}
-                        </div>
-                        <div className="text-sm text-cafe-rich-brown dark:text-cafe-latte">
-                          {formatPersianDate(new Date(event.date))}
-                        </div>
-                      </div>
-                      {getStatusBadge(event.status)}
+                  {userRegistrations.length === 0 ? (
+                    <div className="text-center text-cafe-rich-brown dark:text-cafe-latte py-8">
+                      <BookOpen className="w-12 h-12 mx-auto mb-4 text-cafe-caramel opacity-50" />
+                      <p>هنوز در هیچ رویدادی شرکت نکرده‌اید</p>
                     </div>
-                  ))}
+                  ) : (
+                    userRegistrations.slice(0, 3).map((event: any) => (
+                      <div key={event.id} className="flex items-center justify-between p-4 bg-cafe-cream dark:bg-cafe-espresso rounded-xl">
+                        <div>
+                          <div className="font-medium text-cafe-mocha dark:text-cafe-warm-white">
+                            {event.bookTitle}
+                          </div>
+                          <div className="text-sm text-cafe-rich-brown dark:text-cafe-latte">
+                            {formatPersianDate(new Date(event.date || Date.now()))}
+                          </div>
+                        </div>
+                        {getStatusBadge("upcoming")}
+                      </div>
+                    ))
+                  )}
                 </CardContent>
               </Card>
 
@@ -272,93 +416,145 @@ export default function Profile() {
           </TabsContent>
 
           <TabsContent value="events" className="space-y-6">
-            <div className="grid gap-6">
-              {mockMyEvents.map((event) => (
-                <Card key={event.id} className="bg-white dark:bg-cafe-mocha border-cafe-cream dark:border-cafe-rich-brown">
-                  <CardContent className="p-6">
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                      <div className="space-y-2">
-                        <h3 className="text-xl font-bold text-cafe-mocha dark:text-cafe-warm-white font-serif">
-                          {event.bookTitle}
-                        </h3>
-                        <p className="text-cafe-rich-brown dark:text-cafe-latte">
-                          نویسنده: {event.author}
-                        </p>
-                        <div className="flex items-center gap-4 text-sm text-cafe-rich-brown dark:text-cafe-latte">
-                          <div className="flex items-center">
-                            <Calendar className="w-4 h-4 ml-2 text-cafe-caramel" />
-                            {formatPersianDate(new Date(event.date))}
-                          </div>
-                          <div className="flex items-center">
-                            <Clock className="w-4 h-4 ml-2 text-cafe-caramel" />
-                            {event.time}
-                          </div>
-                          <div className="flex items-center">
-                            <MapPin className="w-4 h-4 ml-2 text-cafe-caramel" />
-                            {event.location}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex flex-col items-end gap-2">
-                        {getStatusBadge(event.status)}
-                        {event.status === "upcoming" && (
-                          <Button variant="outline" size="sm" className="border-cafe-caramel text-cafe-caramel hover:bg-cafe-caramel hover:text-white">
-                            جزئیات رویداد
-                          </Button>
-                        )}
-                      </div>
-                    </div>
+            <div className="space-y-4">
+              {userRegistrations.length === 0 ? (
+                <Card className="bg-white dark:bg-cafe-mocha border-cafe-cream dark:border-cafe-rich-brown">
+                  <CardContent className="p-12 text-center">
+                    <BookOpen className="w-16 h-16 mx-auto mb-6 text-cafe-caramel opacity-50" />
+                    <h3 className="text-xl font-bold text-cafe-mocha dark:text-cafe-warm-white mb-4">
+                      هیچ رویدادی یافت نشد
+                    </h3>
+                    <p className="text-cafe-rich-brown dark:text-cafe-latte mb-6">
+                      هنوز در هیچ رویدادی ثبت نام نکرده‌اید. برای مشاهده رویدادها به صفحه رویدادها بروید.
+                    </p>
+                    <Link to="/events">
+                      <Button className="bg-cafe-warm-gradient text-white">
+                        مشاهده رویدادها
+                      </Button>
+                    </Link>
                   </CardContent>
                 </Card>
-              ))}
+              ) : (
+                userRegistrations.map((event: any) => (
+                  <Card key={event.id} className="bg-white dark:bg-cafe-mocha border-cafe-cream dark:border-cafe-rich-brown">
+                    <CardContent className="p-6">
+                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div className="flex-1">
+                          <h3 className="text-xl font-bold text-cafe-mocha dark:text-cafe-warm-white mb-2 font-serif">
+                            {event.bookTitle}
+                          </h3>
+                          <p className="text-cafe-rich-brown dark:text-cafe-latte mb-3">
+                            نویسنده: {event.author}
+                          </p>
+                          <div className="flex flex-wrap gap-4 text-sm text-cafe-rich-brown dark:text-cafe-latte">
+                            <div className="flex items-center">
+                              <Calendar className="w-4 h-4 ml-2 text-cafe-caramel" />
+                              {formatPersianDate(new Date(event.date || Date.now()))}
+                            </div>
+                            <div className="flex items-center">
+                              <Clock className="w-4 h-4 ml-2 text-cafe-caramel" />
+                              <span className="persian-numbers">{event.time || "18:00"}</span>
+                            </div>
+                            <div className="flex items-center">
+                              <MapPin className="w-4 h-4 ml-2 text-cafe-caramel" />
+                              {event.location || "کافه کتاب"}
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-3">
+                          {getStatusBadge("upcoming")}
+                          <Link to={`/event/${event.id}`}>
+                            <Button variant="outline" size="sm" className="border-cafe-caramel text-cafe-caramel hover:bg-cafe-caramel hover:text-white">
+                              <Eye className="w-4 h-4 ml-2" />
+                              جزئیات
+                            </Button>
+                          </Link>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))
+              )}
             </div>
           </TabsContent>
 
           <TabsContent value="clubs" className="space-y-6">
-            <div className="grid gap-6">
-              {mockMyClubs.map((club) => (
-                <Card key={club.id} className="bg-white dark:bg-cafe-mocha border-cafe-cream dark:border-cafe-rich-brown">
-                  <CardContent className="p-6">
-                    <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                      <div className="space-y-3 flex-1">
-                        <div className="flex items-center justify-between">
-                          <h3 className="text-xl font-bold text-cafe-mocha dark:text-cafe-warm-white font-serif">
-                            {club.name}
-                          </h3>
-                          <Badge className="bg-cafe-sage text-white">{club.status === "active" ? "فعال" : "غیرفعال"}</Badge>
-                        </div>
-                        <p className="text-cafe-rich-brown dark:text-cafe-latte leading-relaxed">
-                          {club.description}
-                        </p>
-                        <div className="flex items-center gap-6 text-sm text-cafe-rich-brown dark:text-cafe-latte">
-                          <div className="flex items-center">
-                            <User className="w-4 h-4 ml-2 text-cafe-caramel" />
-                            <span className="persian-numbers">{club.memberCount} عضو</span>
-                          </div>
-                          <div className="flex items-center">
-                            <Calendar className="w-4 h-4 ml-2 text-cafe-caramel" />
-                            عضو از: {formatPersianDate(new Date(club.joinDate))}
-                          </div>
-                          {club.nextMeeting && (
-                            <div className="flex items-center">
-                              <Clock className="w-4 h-4 ml-2 text-cafe-caramel" />
-                              جلسه بعدی: {formatPersianDate(new Date(club.nextMeeting))}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        <Button variant="outline" size="sm" className="border-cafe-caramel text-cafe-caramel hover:bg-cafe-caramel hover:text-white">
-                          مشاهده باشگاه
-                        </Button>
-                        <Button variant="outline" size="sm" className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white">
-                          ترک باشگاه
-                        </Button>
-                      </div>
-                    </div>
+            <div className="space-y-4">
+              {userClubs.length === 0 ? (
+                <Card className="bg-white dark:bg-cafe-mocha border-cafe-cream dark:border-cafe-rich-brown">
+                  <CardContent className="p-12 text-center">
+                    <User className="w-16 h-16 mx-auto mb-6 text-cafe-caramel opacity-50" />
+                    <h3 className="text-xl font-bold text-cafe-mocha dark:text-cafe-warm-white mb-4">
+                      هیچ باشگاهی یافت نشد
+                    </h3>
+                    <p className="text-cafe-rich-brown dark:text-cafe-latte mb-6">
+                      هنوز عضو هیچ باشگاهی نیستید. برای ایجاد باشگاه جدید از دکمه زیر استفاده کنید.
+                    </p>
+                    <Link to="/create-club">
+                      <Button className="bg-cafe-warm-gradient text-white">
+                        ایجاد باشگاه جدید
+                      </Button>
+                    </Link>
                   </CardContent>
                 </Card>
-              ))}
+              ) : (
+                userClubs.map((club: any) => (
+                  <Card key={club.id} className="bg-white dark:bg-cafe-mocha border-cafe-cream dark:border-cafe-rich-brown">
+                    <CardContent className="p-6">
+                      <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+                        <div className="space-y-3 flex-1">
+                          <div className="flex items-center justify-between">
+                            <h3 className="text-xl font-bold text-cafe-mocha dark:text-cafe-warm-white font-serif">
+                              {club.name}
+                            </h3>
+                            <Badge className="bg-cafe-sage text-white">فعال</Badge>
+                          </div>
+                          <p className="text-cafe-rich-brown dark:text-cafe-latte leading-relaxed">
+                            {club.description}
+                          </p>
+                          <div className="flex items-center gap-6 text-sm text-cafe-rich-brown dark:text-cafe-latte">
+                            <div className="flex items-center">
+                              <User className="w-4 h-4 ml-2 text-cafe-caramel" />
+                              <span className="persian-numbers">{club.memberCount || 15} عضو</span>
+                            </div>
+                            <div className="flex items-center">
+                              <Calendar className="w-4 h-4 ml-2 text-cafe-caramel" />
+                              عضو از: {formatPersianDate(new Date())}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="border-cafe-caramel text-cafe-caramel hover:bg-cafe-caramel hover:text-white"
+                            onClick={() => {
+                              toast({
+                                title: "مشاهده باشگاه",
+                                description: "این قابلیت به زودی فعال خواهد شد.",
+                              });
+                            }}
+                          >
+                            <Eye className="w-4 h-4 ml-2" />
+                            مشاهده باشگاه
+                          </Button>
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
+                            onClick={() => leaveClubMutation.mutate(club.id)}
+                            disabled={leaveClubMutation.isPending}
+                          >
+                            <UserMinus className="w-4 h-4 ml-2" />
+                            ترک باشگاه
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))
+              )}
             </div>
           </TabsContent>
         </Tabs>
