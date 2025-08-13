@@ -57,12 +57,38 @@ export default function Register() {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Store user data and auto-login
-      const userData = {
+      // Store user data in registered users list for login validation
+      const registeredUsers = JSON.parse(localStorage.getItem("registeredUsers") || "[]");
+      const newUser = {
+        id: `user-${Date.now()}`,
         fullName: data.fullName,
         email: data.email,
+        phone: data.phone,
+        password: data.password, // In real app, this would be hashed
+        registeredAt: new Date().toISOString(),
       };
-      localStorage.setItem("user", JSON.stringify(userData));
+      
+      // Check if email already exists
+      const existingUser = registeredUsers.find((user: any) => user.email === data.email);
+      if (existingUser) {
+        toast({
+          title: "خطا در ثبت نام",
+          description: "این ایمیل قبلاً ثبت شده است.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      registeredUsers.push(newUser);
+      localStorage.setItem("registeredUsers", JSON.stringify(registeredUsers));
+      
+      // Store current user data for login
+      localStorage.setItem("user", JSON.stringify({
+        id: newUser.id,
+        fullName: newUser.fullName,
+        email: newUser.email,
+        phone: newUser.phone,
+      }));
       
       toast({
         title: "ثبت نام موفق",

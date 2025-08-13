@@ -45,12 +45,28 @@ export default function Login() {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      // Mock user data - store in localStorage
-      const mockUser = {
-        fullName: "سارا احمدی",
-        email: data.email,
-      };
-      localStorage.setItem("user", JSON.stringify(mockUser));
+      // Validate credentials against registered users
+      const registeredUsers = JSON.parse(localStorage.getItem("registeredUsers") || "[]");
+      const user = registeredUsers.find((user: any) => 
+        user.email === data.email && user.password === data.password
+      );
+      
+      if (!user) {
+        toast({
+          title: "خطا در ورود",
+          description: "ایمیل یا رمز عبور اشتباه است.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      // Store authenticated user data
+      localStorage.setItem("user", JSON.stringify({
+        id: user.id,
+        fullName: user.fullName,
+        email: user.email,
+        phone: user.phone,
+      }));
       
       toast({
         title: "ورود موفق",
@@ -62,7 +78,7 @@ export default function Login() {
     } catch (error) {
       toast({
         title: "خطا در ورود",
-        description: "ایمیل یا رمز عبور اشتباه است.",
+        description: "مشکلی در ورود پیش آمده است.",
         variant: "destructive",
       });
     } finally {

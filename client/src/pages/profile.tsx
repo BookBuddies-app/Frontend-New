@@ -31,6 +31,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { formatPersianDate } from "@/lib/persian-utils";
+import ViewClubModal from "@/components/view-club-modal";
 
 // Profile edit schema
 const profileEditSchema = z.object({
@@ -41,6 +42,8 @@ const profileEditSchema = z.object({
 export default function Profile() {
   const [activeTab, setActiveTab] = useState("overview");
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isViewClubModalOpen, setIsViewClubModalOpen] = useState(false);
+  const [selectedClub, setSelectedClub] = useState<any>(null);
   const [user, setUser] = useState<any>(null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -142,6 +145,69 @@ export default function Profile() {
     },
   });
 
+  const cancelRegistrationMutation = useMutation({
+    mutationFn: async (eventId: string) => {
+      // Remove from localStorage
+      const registrations = JSON.parse(localStorage.getItem("userRegistrations") || "[]");
+      const updatedRegistrations = registrations.filter((reg: any) => reg.id !== eventId);
+      localStorage.setItem("userRegistrations", JSON.stringify(updatedRegistrations));
+      return updatedRegistrations;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/user/registrations"] });
+      toast({
+        title: "لغو ثبت نام",
+        description: "ثبت نام شما با موفقیت لغو شد.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "خطا",
+        description: "خطا در لغو ثبت نام",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const uploadProfilePicture = useMutation({
+    mutationFn: async (file: File) => {
+      // Create a URL for the uploaded image
+      const imageUrl = URL.createObjectURL(file);
+      const updatedUser = { ...user, avatar: imageUrl };
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      setUser(updatedUser);
+      return imageUrl;
+    },
+    onSuccess: () => {
+      toast({
+        title: "تصویر پروفایل بروزرسانی شد",
+        description: "تصویر پروفایل شما با موفقیت تغییر کرد.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "خطا",
+        description: "خطا در بروزرسانی تصویر پروفایل",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleProfilePictureChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        toast({
+          title: "خطا",
+          description: "حجم فایل باید کمتر از ۵ مگابایت باشد.",
+          variant: "destructive",
+        });
+        return;
+      }
+      uploadProfilePicture.mutate(file);
+    }
+  };
+
   const onSubmitProfile = (data: any) => {
     updateProfileMutation.mutate(data);
   };
@@ -183,24 +249,35 @@ export default function Profile() {
         <div className="bg-white dark:bg-cafe-mocha rounded-2xl shadow-lg p-8 mb-8">
           <div className="flex flex-col md:flex-row items-start gap-8">
             <div className="flex flex-col items-center text-center">
-              <Avatar className="w-32 h-32 mb-4">
-                <AvatarFallback className="text-3xl bg-cafe-caramel text-white font-bold">
-                  {user.fullName.split(' ').map((name: string) => name[0]).join('')}
-                </AvatarFallback>
-              </Avatar>
-              <Button 
-                variant="outline" 
-                className="border-cafe-caramel text-cafe-caramel hover:bg-cafe-caramel hover:text-white"
-                onClick={() => {
-                  toast({
-                    title: "ویرایش تصویر",
-                    description: "این قابلیت به زودی فعال خواهد شد.",
-                  });
-                }}
-              >
-                <Edit className="w-4 h-4 ml-2" />
-                ویرایش تصویر
-              </Button>
+              <div className="relative">
+                <Avatar className="w-32 h-32 mb-4">
+                  {user.avatar ? (
+                    <img src={user.avatar} alt={user.fullName} className="w-full h-full object-cover" />
+                  ) : (
+                    <AvatarFallback className="text-3xl bg-cafe-caramel text-white font-bold">
+                      {user.fullName.split(' ').map((name: string) => name[0]).join('')}
+                    </AvatarFallback>
+                  )}
+                </Avatar>
+              </div>
+              <div className="relative">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleProfilePictureChange}
+                  className="hidden"
+                  id="profile-picture-input"
+                />
+                <Button 
+                  variant="outline" 
+                  className="border-cafe-caramel text-cafe-caramel hover:bg-cafe-caramel hover:text-white"
+                  onClick={() => document.getElementById('profile-picture-input')?.click()}
+                  disabled={uploadProfilePicture.isPending}
+                >
+                  <Edit className="w-4 h-4 ml-2" />
+                  {uploadProfilePicture.isPending ? "در حال بروزرسانی..." : "ویرایش تصویر"}
+                </Button>
+              </div>
             </div>
             
             <div className="flex-1">
@@ -464,12 +541,22 @@ export default function Profile() {
                         
                         <div className="flex items-center gap-3">
                           {getStatusBadge("upcoming")}
-                          <Link to={`/event/${event.id}`}>
+                          <Link to={`/events/${event.id}`}>
                             <Button variant="outline" size="sm" className="border-cafe-caramel text-cafe-caramel hover:bg-cafe-caramel hover:text-white">
                               <Eye className="w-4 h-4 ml-2" />
                               جزئیات
                             </Button>
                           </Link>
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
+                            onClick={() => cancelRegistrationMutation.mutate(event.id)}
+                            disabled={cancelRegistrationMutation.isPending}
+                          >
+                            <X className="w-4 h-4 ml-2" />
+                            لغو ثبت نام
+                          </Button>
                         </div>
                       </div>
                     </CardContent>
@@ -530,10 +617,8 @@ export default function Profile() {
                             size="sm" 
                             className="border-cafe-caramel text-cafe-caramel hover:bg-cafe-caramel hover:text-white"
                             onClick={() => {
-                              toast({
-                                title: "مشاهده باشگاه",
-                                description: "این قابلیت به زودی فعال خواهد شد.",
-                              });
+                              setSelectedClub(club);
+                              setIsViewClubModalOpen(true);
                             }}
                           >
                             <Eye className="w-4 h-4 ml-2" />
@@ -559,6 +644,13 @@ export default function Profile() {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* View Club Modal */}
+      <ViewClubModal
+        isOpen={isViewClubModalOpen}
+        onClose={() => setIsViewClubModalOpen(false)}
+        club={selectedClub}
+      />
     </div>
   );
 }
