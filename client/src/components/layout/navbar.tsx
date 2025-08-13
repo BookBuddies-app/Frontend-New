@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { 
   BookOpen, 
   Menu, 
@@ -11,7 +12,9 @@ import {
   Phone, 
   LogIn, 
   UserPlus,
-  User
+  User,
+  LogOut,
+  Settings
 } from "lucide-react";
 
 const navigationItems = [
@@ -24,6 +27,23 @@ const navigationItems = [
 export default function Navbar() {
   const [location] = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState<{ fullName: string; email: string } | null>(null);
+
+  // Mock user login state - in real implementation this would come from context/auth
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      setUser(JSON.parse(userData));
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setUser(null);
+    setIsLoggedIn(false);
+  };
 
   const isActive = (href: string) => {
     if (href === "/") return location === "/";
@@ -43,14 +63,14 @@ export default function Navbar() {
           </Link>
           
           {/* Desktop Navigation */}
-          <div className="hidden md:block">
-            <div className="flex items-center gap-8">
+          <div className="hidden lg:block">
+            <div className="flex items-center gap-4 xl:gap-6">
               {navigationItems.map((item) => (
                 <Link key={item.href} to={item.href}>
                   <Button
                     variant="ghost"
-                    size="lg"
-                    className={`px-6 py-3 rounded-xl text-base font-medium transition-all duration-300 hover:scale-105 ${
+                    size="sm"
+                    className={`px-3 xl:px-4 py-2 rounded-lg text-sm xl:text-base font-medium transition-all duration-300 hover:scale-105 ${
                       isActive(item.href)
                         ? "text-cafe-warm-white bg-cafe-caramel shadow-lg"
                         : "text-cafe-rich-brown dark:text-cafe-latte hover:text-cafe-warm-white hover:bg-cafe-cinnamon dark:hover:bg-cafe-mocha"
@@ -60,28 +80,61 @@ export default function Navbar() {
                   </Button>
                 </Link>
               ))}
-              <div className="flex items-center gap-3">
-                <Link to="/login">
-                  <Button 
-                    variant="outline" 
-                    className="border-cafe-caramel text-cafe-caramel hover:bg-cafe-caramel hover:text-white transition-all duration-300 px-5 py-2.5 rounded-xl font-medium"
-                  >
-                    <LogIn className="w-4 h-4 ml-2" />
-                    ورود
-                  </Button>
-                </Link>
-                <Link to="/register">
-                  <Button className="bg-cafe-warm-gradient text-white hover:shadow-lg hover:scale-105 transition-all duration-300 px-5 py-2.5 rounded-xl font-medium">
-                    <UserPlus className="w-4 h-4 ml-2" />
-                    ثبت نام
-                  </Button>
-                </Link>
+              
+              {/* Auth Section */}
+              <div className="flex items-center gap-2 xl:gap-3">
+                {isLoggedIn && user ? (
+                  <div className="flex items-center gap-2">
+                    <Link to="/profile">
+                      <Button variant="ghost" className="flex items-center gap-2 p-2 hover:bg-cafe-cream dark:hover:bg-cafe-mocha rounded-lg">
+                        <Avatar className="w-8 h-8">
+                          <AvatarFallback className="text-xs bg-cafe-caramel text-white font-bold">
+                            {user.fullName.split(' ').map(name => name[0]).join('')}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span className="text-sm text-cafe-rich-brown dark:text-cafe-latte hidden xl:inline">
+                          {user.fullName.split(' ')[0]}
+                        </span>
+                      </Button>
+                    </Link>
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={handleLogout}
+                      className="text-cafe-rich-brown dark:text-cafe-latte hover:text-red-600 p-2 rounded-lg"
+                    >
+                      <LogOut className="w-4 h-4" />
+                    </Button>
+                  </div>
+                ) : (
+                  <>
+                    <Link to="/login">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        className="border-cafe-caramel text-cafe-caramel hover:bg-cafe-caramel hover:text-white transition-all duration-300 px-3 xl:px-4 py-2 rounded-lg font-medium text-sm"
+                      >
+                        <LogIn className="w-4 h-4 ml-1 xl:ml-2" />
+                        <span className="hidden sm:inline">ورود</span>
+                      </Button>
+                    </Link>
+                    <Link to="/register">
+                      <Button 
+                        size="sm"
+                        className="bg-cafe-warm-gradient text-white hover:shadow-lg hover:scale-105 transition-all duration-300 px-3 xl:px-4 py-2 rounded-lg font-medium text-sm"
+                      >
+                        <UserPlus className="w-4 h-4 ml-1 xl:ml-2" />
+                        <span className="hidden sm:inline">ثبت نام</span>
+                      </Button>
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </div>
           
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="sm" className="text-cafe-mocha dark:text-cafe-caramel hover:text-cafe-caramel dark:hover:text-cafe-golden">
@@ -114,25 +167,53 @@ export default function Navbar() {
                   ))}
                   
                   <div className="flex flex-col gap-3 mt-6">
-                    <Link to="/login">
-                      <Button 
-                        variant="outline" 
-                        className="w-full border-cafe-caramel text-cafe-caramel hover:bg-cafe-caramel hover:text-white transition-all duration-300 px-6 py-4 rounded-xl font-medium"
-                        onClick={() => setIsOpen(false)}
-                      >
-                        <LogIn className="w-5 h-5 ml-2" />
-                        ورود
-                      </Button>
-                    </Link>
-                    <Link to="/register">
-                      <Button 
-                        className="w-full bg-cafe-warm-gradient text-white hover:shadow-lg px-6 py-4 rounded-xl font-medium"
-                        onClick={() => setIsOpen(false)}
-                      >
-                        <UserPlus className="w-5 h-5 ml-2" />
-                        ثبت نام
-                      </Button>
-                    </Link>
+                    {isLoggedIn && user ? (
+                      <>
+                        <Link to="/profile">
+                          <Button 
+                            variant="outline"
+                            className="w-full border-cafe-caramel text-cafe-caramel hover:bg-cafe-caramel hover:text-white transition-all duration-300 px-6 py-4 rounded-xl font-medium"
+                            onClick={() => setIsOpen(false)}
+                          >
+                            <User className="w-5 h-5 ml-2" />
+                            پروفایل من
+                          </Button>
+                        </Link>
+                        <Button 
+                          variant="outline"
+                          className="w-full border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-300 px-6 py-4 rounded-xl font-medium"
+                          onClick={() => {
+                            handleLogout();
+                            setIsOpen(false);
+                          }}
+                        >
+                          <LogOut className="w-5 h-5 ml-2" />
+                          خروج
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <Link to="/login">
+                          <Button 
+                            variant="outline" 
+                            className="w-full border-cafe-caramel text-cafe-caramel hover:bg-cafe-caramel hover:text-white transition-all duration-300 px-6 py-4 rounded-xl font-medium"
+                            onClick={() => setIsOpen(false)}
+                          >
+                            <LogIn className="w-5 h-5 ml-2" />
+                            ورود
+                          </Button>
+                        </Link>
+                        <Link to="/register">
+                          <Button 
+                            className="w-full bg-cafe-warm-gradient text-white hover:shadow-lg px-6 py-4 rounded-xl font-medium"
+                            onClick={() => setIsOpen(false)}
+                          >
+                            <UserPlus className="w-5 h-5 ml-2" />
+                            ثبت نام
+                          </Button>
+                        </Link>
+                      </>
+                    )}
                   </div>
                 </div>
               </SheetContent>

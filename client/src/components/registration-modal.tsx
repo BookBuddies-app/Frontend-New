@@ -242,8 +242,8 @@ export default function RegistrationModal({ isOpen, onClose, event }: Registrati
             
             <Button
               type="submit"
-              className="w-full bg-cafe-brown hover:bg-cafe-dark-brown text-white font-medium"
-              disabled={registerMutation.isPending}
+              className="w-full bg-cafe-brown hover:bg-cafe-dark-brown text-white font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
+              disabled={registerMutation.isPending || !form.formState.isValid || !form.watch("terms")}
             >
               {registerMutation.isPending ? (
                 <>

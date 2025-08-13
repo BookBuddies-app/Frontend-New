@@ -56,21 +56,28 @@ export default function Register() {
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
-      console.log("Register data:", data);
+      
+      // Store user data and auto-login
+      const userData = {
+        fullName: data.fullName,
+        email: data.email,
+      };
+      localStorage.setItem("user", JSON.stringify(userData));
       
       toast({
         title: "ثبت نام موفق",
-        description: "حساب کاربری شما با موفقیت ایجاد شد. لطفاً ایمیل خود را تأیید کنید.",
+        description: "حساب کاربری شما با موفقیت ایجاد شد.",
       });
       
-      // Redirect to login or verification page
+      // Redirect to profile
       setTimeout(() => {
-        window.location.href = "/login";
-      }, 2000);
+        window.location.href = "/profile";
+      }, 1500);
     } catch (error) {
       toast({
         title: "خطا در ثبت نام",
         description: "مشکلی در ایجاد حساب کاربری پیش آمده است.",
+        variant: "destructive",
       });
     } finally {
       setIsLoading(false);

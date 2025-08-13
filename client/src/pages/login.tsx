@@ -44,19 +44,26 @@ export default function Login() {
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
-      console.log("Login data:", data);
+      
+      // Mock user data - store in localStorage
+      const mockUser = {
+        fullName: "سارا احمدی",
+        email: data.email,
+      };
+      localStorage.setItem("user", JSON.stringify(mockUser));
       
       toast({
         title: "ورود موفق",
         description: "با موفقیت وارد حساب کاربری شدید.",
       });
       
-      // Redirect to home or dashboard
-      window.location.href = "/";
+      // Redirect to profile
+      window.location.href = "/profile";
     } catch (error) {
       toast({
         title: "خطا در ورود",
         description: "ایمیل یا رمز عبور اشتباه است.",
+        variant: "destructive",
       });
     } finally {
       setIsLoading(false);

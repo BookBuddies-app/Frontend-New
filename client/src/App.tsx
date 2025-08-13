@@ -13,6 +13,7 @@ import Rules from "@/pages/rules";
 import Login from "@/pages/login";
 import Register from "@/pages/register";
 import Profile from "@/pages/profile";
+import CreateClub from "@/pages/create-club";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 
@@ -31,6 +32,7 @@ function Router() {
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
           <Route path="/profile" component={Profile} />
+          <Route path="/create-club" component={CreateClub} />
           <Route component={NotFound} />
         </Switch>
       </main>
