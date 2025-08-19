@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -41,8 +41,17 @@ interface RegistrationModalProps {
 
 export default function RegistrationModal({ isOpen, onClose, event }: RegistrationModalProps) {
   const [isSuccess, setIsSuccess] = useState(false);
+  const [user, setUser] = useState<any>(null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
+
+  // Get user data from localStorage
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      setUser(JSON.parse(userData));
+    }
+  }, []);
   
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -84,6 +93,17 @@ export default function RegistrationModal({ isOpen, onClose, event }: Registrati
   });
 
   const onSubmit = (data: FormData) => {
+    // Check authentication before proceeding
+    if (!user) {
+      toast({
+        title: "ورود مورد نیاز است",
+        description: "لطفاً ابتدا ثبت‌نام و ورود کنید، سپس می‌توانید در رویداد شرکت کنید.",
+        variant: "destructive",
+      });
+      onClose();
+      return;
+    }
+
     const { terms, ...registrationData } = data;
     
     // Store registration in localStorage for profile tracking
@@ -105,6 +125,7 @@ export default function RegistrationModal({ isOpen, onClose, event }: Registrati
     registerMutation.mutate({
       ...registrationData,
       eventId: event.id,
+      userId: user.id, // Add user ID to the registration
     });
   };
 

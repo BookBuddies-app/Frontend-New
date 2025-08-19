@@ -57,6 +57,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const eventId = req.params.id;
       
+      // Basic authentication check - require userId for registration
+      // In a real app this would use proper session/JWT authentication
+      if (!req.body.userId) {
+        return res.status(401).json({ 
+          message: "لطفاً ابتدا ثبت‌نام و ورود کنید، سپس می‌توانید در رویداد شرکت کنید." 
+        });
+      }
+      
       // Check if event exists
       const event = await storage.getEvent(eventId);
       if (!event) {
