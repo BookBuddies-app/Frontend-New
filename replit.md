@@ -12,7 +12,8 @@ A Persian-language book club café application built with React, Express, and Dr
   - Frontend checks authentication state before opening registration modal
   - Backend validates userId and rejects unauthenticated registration attempts
   - Persian error message: "لطفاً ابتدا ثبت‌نام و ورود کنید، سپس می‌توانید در رویداد شرکت کنید"
-  - Registration button shows login links for unauthenticated users
+  - Registration button shows login/register links for unauthenticated users with proper redirect
+  - Terms & conditions checkbox properly controls registration button state
 ✓ Fixed footer text to correctly show "© 1404 باشگاه کافه کتاب" 
 ✓ Updated "About" section title to use correct site name
 ✓ Removed Replit-specific banner script from index.html for better GitHub deployment compatibility
