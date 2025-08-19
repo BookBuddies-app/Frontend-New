@@ -95,7 +95,7 @@ export default function Login() {
             ورود به حساب
           </h1>
           <p className="text-cafe-rich-brown dark:text-cafe-latte">
-            به باشگاه کتاب کافه خوش آمدید
+            به باشگاه کافه کتاب خوش آمدید
           </p>
         </div>
 

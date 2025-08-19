@@ -8,7 +8,7 @@ export default function About() {
         <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="text-center mb-16">
             <h1 className="text-5xl font-bold text-cafe-mocha dark:text-cafe-warm-white mb-6 font-serif">
-              درباره باشگاه کتاب کافه
+              درباره باشگاه کافه کتاب
             </h1>
             <p className="text-xl text-cafe-rich-brown dark:text-cafe-latte max-w-3xl mx-auto leading-relaxed">
               مکانی گرم و دوستانه برای عاشقان ادبیات فارسی که می‌خواهند در فضایی صمیمی درباره کتاب‌های محبوبشان گفتگو کنند

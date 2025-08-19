@@ -175,7 +175,7 @@ export class MemStorage implements IStorage {
         date: new Date("2025-09-22T17:00:00"),
         time: "ساعت ۱۷:۰۰ تا ۱۹:۰۰",
         capacity: 10,
-        imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=250",
+        imageUrl: "https://images.unsplash.com/photo-1518481612222-68bbe828ecd1?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=250",
         clubId: "club-2",
         cafeId: "cafe-2",
         createdAt: new Date(),
@@ -231,7 +231,7 @@ export class MemStorage implements IStorage {
         date: new Date("2025-10-20T16:00:00"),
         time: "ساعت ۱۶:۰۰ تا ۱۸:۰۰",
         capacity: 16,
-        imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=250",
+        imageUrl: "https://images.unsplash.com/photo-1503751071777-d2918b21bbd9?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=250",
         clubId: "club-1",
         cafeId: "cafe-4",
         createdAt: new Date(),
@@ -291,6 +291,7 @@ export class MemStorage implements IStorage {
     const user: User = { 
       ...insertUser, 
       id,
+      role: insertUser.role || "user",
       phone: insertUser.phone || null,
       avatar: insertUser.avatar || null,
       createdAt: new Date()
@@ -350,6 +351,7 @@ export class MemStorage implements IStorage {
     const club: Club = { 
       ...insertClub,
       imageUrl: insertClub.imageUrl || null,
+      isActive: insertClub.isActive ?? true,
       id,
       createdAt: new Date()
     };
@@ -439,6 +441,7 @@ export class MemStorage implements IStorage {
     const registration: Registration = { 
       ...insertRegistration,
       notes: insertRegistration.notes || null,
+      userId: insertRegistration.userId || null,
       id, 
       createdAt: new Date() 
     };
@@ -459,7 +462,7 @@ export class MemStorage implements IStorage {
   async getUserRegistrations(userId: string): Promise<Registration[]> {
     return Array.from(this.registrations.values())
       .filter(reg => reg.userId === userId)
-      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+      .sort((a, b) => (b.createdAt?.getTime() || 0) - (a.createdAt?.getTime() || 0));
   }
 
   // Additional event methods

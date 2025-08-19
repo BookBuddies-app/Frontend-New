@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useRoute } from "wouter";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import RegistrationModal from "@/components/registration-modal";
 import { formatPersianDate } from "@/lib/persian-utils";
+import { useToast } from "@/hooks/use-toast";
 import { 
   Calendar, 
   Clock, 
@@ -14,13 +16,38 @@ import {
   MapPin, 
   UserPlus, 
   ArrowRight,
-  BookOpen
+  BookOpen,
+  LogIn
 } from "lucide-react";
 import type { Event } from "@shared/schema";
 
 export default function EventDetail() {
   const [, params] = useRoute("/events/:id");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [showLoginMessage, setShowLoginMessage] = useState(false);
+  const { toast } = useToast();
+
+  // Get user data from localStorage
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      setUser(JSON.parse(userData));
+    }
+  }, []);
+
+  const handleRegistrationClick = () => {
+    if (!user) {
+      setShowLoginMessage(true);
+      toast({
+        title: "ورود مورد نیاز است",
+        description: "لطفاً ابتدا ثبت‌نام و ورود کنید، سپس می‌توانید در رویداد شرکت کنید.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setIsModalOpen(true);
+  };
   
   const { data: event, isLoading } = useQuery<Event & { registrationCount: number }>({
     queryKey: ["/api/events", params?.id],
@@ -194,8 +221,9 @@ export default function EventDetail() {
                         </Button>
                       ) : (
                         <Button
-                          onClick={() => setIsModalOpen(true)}
+                          onClick={handleRegistrationClick}
                           className="w-full bg-cafe-warm-gradient text-white hover:shadow-lg hover:scale-105 transition-all duration-300 py-3"
+                          data-testid="button-register"
                         >
                           <UserPlus className="w-5 h-5 ml-2" />
                           ثبت نام در این جلسه
@@ -207,6 +235,28 @@ export default function EventDetail() {
               </div>
             </CardContent>
           </Card>
+
+          {/* Login Required Message */}
+          {showLoginMessage && (
+            <Alert className="mb-8 bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800">
+              <LogIn className="h-4 w-4 text-red-600 dark:text-red-400" />
+              <AlertDescription className="text-red-700 dark:text-red-300">
+                لطفاً ابتدا ثبت‌نام و ورود کنید، سپس می‌توانید در رویداد شرکت کنید.
+                <div className="mt-3 space-x-2 space-x-reverse">
+                  <Link to="/login">
+                    <Button size="sm" className="bg-red-600 hover:bg-red-700 text-white" data-testid="link-login">
+                      ورود
+                    </Button>
+                  </Link>
+                  <Link to="/register">
+                    <Button size="sm" variant="outline" className="border-red-600 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20" data-testid="link-register">
+                      ثبت نام
+                    </Button>
+                  </Link>
+                </div>
+              </AlertDescription>
+            </Alert>
+          )}
 
           {/* Event Description */}
           <Card className="bg-white dark:bg-cafe-mocha rounded-2xl shadow-lg">

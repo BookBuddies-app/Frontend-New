@@ -24,7 +24,7 @@ export default function Home() {
         
         <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 text-center">
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-cafe-espresso dark:text-cafe-warm-white mb-8 font-serif leading-tight">
-            باشگاه کتاب کافه
+            باشگاه کافه کتاب
           </h1>
           <p className="text-xl md:text-2xl text-cafe-rich-brown dark:text-cafe-latte mb-12 max-w-4xl mx-auto leading-relaxed">
             جایی دنج برای عاشقان کتاب. هر هفته در فضایی گرم و صمیمی دور هم جمع می‌شویم تا درباره کتاب‌های جذاب گفتگو کنیم و قهوه‌ای خوشمزه بنوشیم.

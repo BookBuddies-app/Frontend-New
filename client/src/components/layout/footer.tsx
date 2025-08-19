@@ -8,7 +8,7 @@ export default function Footer() {
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center mb-6">
               <BookOpen className="text-cafe-caramel text-3xl ml-3" />
-              <span className="text-2xl font-bold font-serif text-cafe-warm-white">باشگاه کتاب کافه</span>
+              <span className="text-2xl font-bold font-serif text-cafe-warm-white">باشگاه کافه کتاب</span>
             </div>
             <p className="text-cafe-latte mb-6 leading-relaxed text-lg">
               مکانی برای عاشقان کتاب که می‌خواهند در فضایی گرم و دوستانه درباره ادبیات فارسی صحبت کنند.

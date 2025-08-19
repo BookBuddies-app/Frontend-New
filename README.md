@@ -1,4 +1,4 @@
-# Persian Book Club Café (KetabCafe)
+# Persian Book Club Café (باشگاه کافه کتاب)
 
 A Persian-language book club café application built with React, Express, and TypeScript with full RTL support.
 

@@ -35,7 +35,7 @@ export default function ViewClubModal({ isOpen, onClose, club }: ViewClubModalPr
         <DialogHeader>
           <div className="flex items-center justify-between">
             <DialogTitle className="text-2xl font-bold text-cafe-mocha dark:text-cafe-warm-white font-serif">
-              اطلاعات باشگاه کتاب
+              اطلاعات باشگاه
             </DialogTitle>
             <Button
               variant="ghost"

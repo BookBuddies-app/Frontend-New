@@ -58,7 +58,7 @@ export default function Navbar() {
           <Link to="/" className="flex-shrink-0 flex items-center hover:opacity-80 transition-opacity group">
             <BookOpen className="text-cafe-mocha dark:text-cafe-caramel text-3xl ml-3 group-hover:text-cafe-caramel dark:group-hover:text-cafe-golden transition-colors" />
             <span className="text-2xl font-bold text-cafe-mocha dark:text-cafe-warm-white font-serif group-hover:text-cafe-caramel dark:group-hover:text-cafe-golden transition-colors">
-              باشگاه کتاب کافه
+              باشگاه کافه کتاب
             </span>
           </Link>
           
@@ -144,7 +144,7 @@ export default function Navbar() {
               <SheetContent side="right" className="w-[350px] bg-white dark:bg-cafe-espresso border-l border-cafe-cream dark:border-cafe-mocha">
                 <div className="flex items-center mb-10 mt-6">
                   <BookOpen className="text-cafe-mocha dark:text-cafe-caramel text-3xl ml-3" />
-                  <span className="text-2xl font-bold text-cafe-mocha dark:text-cafe-warm-white font-serif">باشگاه کتاب کافه</span>
+                  <span className="text-2xl font-bold text-cafe-mocha dark:text-cafe-warm-white font-serif">باشگاه کافه کتاب</span>
                 </div>
                 
                 <div className="flex flex-col space-y-5">

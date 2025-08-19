@@ -1,8 +1,17 @@
-# Persian Book Club Café
+# باشگاه کافه کتاب (Persian Book Club Café)
 
 ## Overview
 
 A Persian-language book club café application built with React, Express, and Drizzle ORM. The application allows book lovers to view upcoming literary events, register for book club meetings, and participate in discussions about Persian literature. The UI is designed specifically for Persian text with right-to-left (RTL) support and café-themed styling.
+
+## Recent Changes (Aug 19, 2025)
+
+✓ Updated site name from "باشگاه کتاب کافه" to "باشگاه کافه کتاب" across all components
+✓ Updated event images for "هوای تازه" and "کلیله و دمنه" books with new Unsplash URLs
+✓ Implemented authentication check for event registration - users must login before registering
+✓ Added user-friendly error message for non-authenticated registration attempts
+✓ Removed Replit-specific banner script from index.html for better GitHub deployment compatibility
+✓ Updated all meta tags and SEO content with new site name
 
 ## User Preferences
 

@@ -116,7 +116,7 @@ export default function Register() {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-cafe-mocha dark:text-cafe-warm-white mb-4 font-serif">
-            عضویت در باشگاه
+            عضویت در باشگاه کافه کتاب
           </h1>
           <p className="text-cafe-rich-brown dark:text-cafe-latte">
             به خانواده بزرگ کتابخوانان بپیوندید
