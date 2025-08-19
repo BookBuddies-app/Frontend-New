@@ -27,8 +27,8 @@ import { X, Check, Loader2 } from "lucide-react";
 import type { Event, InsertRegistration } from "@shared/schema";
 import { z } from "zod";
 
-const formSchema = insertRegistrationSchema.omit({ eventId: true }).extend({
-  terms: z.boolean().refine(val => val, "پذیرفتن قوانین و مقررات الزامی است"),
+const formSchema = insertRegistrationSchema.omit({ eventId: true, userId: true }).extend({
+  terms: z.boolean().refine(val => val === true, "پذیرفتن قوانین و مقررات الزامی است"),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -97,10 +97,12 @@ export default function RegistrationModal({ isOpen, onClose, event }: Registrati
     if (!user) {
       toast({
         title: "ورود مورد نیاز است",
-        description: "لطفاً ابتدا ثبت‌نام و ورود کنید، سپس می‌توانید در رویداد شرکت کنید.",
+        description: "Please log in first to register for this event.",
         variant: "destructive",
       });
       onClose();
+      // Redirect to login page
+      window.location.href = "/login";
       return;
     }
 
@@ -266,6 +268,7 @@ export default function RegistrationModal({ isOpen, onClose, event }: Registrati
                       checked={field.value}
                       onCheckedChange={field.onChange}
                       className="data-[state=checked]:bg-cafe-brown data-[state=checked]:border-cafe-brown"
+                      data-testid="checkbox-terms"
                     />
                   </FormControl>
                   <div className="space-y-1 leading-none">
@@ -281,7 +284,8 @@ export default function RegistrationModal({ isOpen, onClose, event }: Registrati
             <Button
               type="submit"
               className="w-full bg-cafe-caramel hover:bg-cafe-cinnamon text-white font-medium disabled:bg-gray-300 disabled:cursor-not-allowed disabled:text-gray-500"
-              disabled={registerMutation.isPending || !form.formState.isValid || !form.watch("terms")}
+              disabled={registerMutation.isPending || !form.watch("terms")}
+              data-testid="button-submit-registration"
             >
               {registerMutation.isPending ? (
                 <>

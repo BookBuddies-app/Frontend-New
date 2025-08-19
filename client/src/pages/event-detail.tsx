@@ -41,9 +41,13 @@ export default function EventDetail() {
       setShowLoginMessage(true);
       toast({
         title: "ورود مورد نیاز است",
-        description: "لطفاً ابتدا ثبت‌نام و ورود کنید، سپس می‌توانید در رویداد شرکت کنید.",
+        description: "Please log in first to register for this event.",
         variant: "destructive",
       });
+      // Redirect to login page
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 2000);
       return;
     }
     setIsModalOpen(true);
