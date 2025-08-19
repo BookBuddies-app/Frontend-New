@@ -231,7 +231,7 @@ export class MemStorage implements IStorage {
         date: new Date("2025-10-20T16:00:00"),
         time: "ساعت ۱۶:۰۰ تا ۱۸:۰۰",
         capacity: 16,
-        imageUrl: "https://images.unsplash.com/photo-1503751071777-d2918b21bbd9?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=250",
+        imageUrl: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=250",
         clubId: "club-1",
         cafeId: "cafe-4",
         createdAt: new Date(),

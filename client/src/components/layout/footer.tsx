@@ -56,7 +56,7 @@ export default function Footer() {
         </div>
         
         <div className="border-t border-cafe-mocha mt-12 pt-8 text-center text-cafe-latte">
-          <p className="persian-numbers text-lg">&copy; ۱۴۰۴ باشگاه کتاب کافه. تمامی حقوق محفوظ است.</p>
+          <p className="persian-numbers text-lg">&copy; ۱۴۰۴ باشگاه کافه کتاب. تمامی حقوق محفوظ است.</p>
         </div>
       </div>
     </footer>

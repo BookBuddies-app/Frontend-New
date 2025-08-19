@@ -99,7 +99,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-4xl md:text-5xl font-bold text-cafe-espresso dark:text-cafe-warm-white mb-8 font-serif">درباره باشگاه کتاب کافه</h2>
+              <h2 className="text-4xl md:text-5xl font-bold text-cafe-espresso dark:text-cafe-warm-white mb-8 font-serif">درباره باشگاه کافه کتاب</h2>
               <p className="text-xl text-cafe-rich-brown dark:text-cafe-latte mb-8 leading-relaxed">
                 باشگاه کتاب کافه مکانی است برای عاشقان کتاب که می‌خواهند در فضایی گرم و دوستانه درباره کتاب‌های مورد علاقه‌شان صحبت کنند. ما هر هفته در کافه دنجی جمع می‌شویم تا با نوشیدن قهوه‌ای خوشمزه، درباره آثار ادبی بحث و تبادل نظر کنیم.
               </p>
