@@ -1,96 +1,73 @@
-# باشگاه کافه کتاب (Persian Book Club Café)
+# Persian Book Club Café Application
 
 ## Overview
 
-A Persian-language book club café application built with React, Express, and Drizzle ORM. The application allows book lovers to view upcoming literary events, register for book club meetings, and participate in discussions about Persian literature. The UI is designed specifically for Persian text with right-to-left (RTL) support and café-themed styling.
-
-## Recent Changes (Aug 19, 2025)
-
-✓ Updated site name from "باشگاه کتاب کافه" to "باشگاه کافه کتاب" across all components
-✓ Updated event images for "هوای تازه" and "کلیله و دمنه" books with new Unsplash URLs
-✓ Implemented complete authentication system for event registration:
-  - Frontend checks authentication state before opening registration modal
-  - Backend validates userId and rejects unauthenticated registration attempts
-  - Persian error message: "لطفاً ابتدا ثبت‌نام و ورود کنید، سپس می‌توانید در رویداد شرکت کنید"
-  - Registration button shows login/register links for unauthenticated users with proper redirect
-  - Terms & conditions checkbox properly controls registration button state
-✓ Fixed footer text to correctly show "© 1404 باشگاه کافه کتاب" 
-✓ Updated "About" section title to use correct site name
-✓ Removed Replit-specific banner script from index.html for better GitHub deployment compatibility
+This is a modern Persian-language book club café application built with React, Express, and TypeScript. The application serves as a platform for book lovers to discover and register for literary events, join book clubs, and participate in discussions about Persian literature. The application features a café-themed design with warm color palettes and comprehensive Persian language support including RTL (right-to-left) layout.
 
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
 
-## Recent Issues Resolved
-
-**Path Resolution Error Fix (Aug 13, 2025):**
-- Root Cause: TypeError "paths[0] argument must be of type string. Received undefined" in vite.config.ts
-- Issue: Project uses import.meta.dirname which requires Node.js v20.11+, but user has Node.js v18.20.8
-- Solution: Must upgrade to Node.js v20.11.0 or higher (critical requirement)
-- Added: Node.js version compatibility checker script and comprehensive documentation
-- Note: Both vite.config.ts and server/vite.ts are protected files that cannot be modified
-- Project structure: This is a monorepo that must be run from root directory with Node.js v20+
-
 ## System Architecture
 
 ### Frontend Architecture
-- **Framework**: React 18 with TypeScript using Vite as the build tool
-- **Routing**: Wouter for client-side routing with pages for home, events listing, and event details
-- **UI Components**: Shadcn/ui component library with Radix UI primitives
-- **Styling**: Tailwind CSS with custom café-themed color palette and Persian typography
+The client-side is built with React 18 and TypeScript, using a modern component-based architecture:
+- **Build System**: Vite for fast development and optimized production builds
+- **Styling**: Tailwind CSS with a custom café-themed color palette and Persian font support (Vazirmatn, Estedad)
+- **UI Components**: Shadcn/ui component library providing consistent, accessible components
 - **State Management**: TanStack Query for server state management and caching
+- **Routing**: Wouter for lightweight client-side routing
 - **Forms**: React Hook Form with Zod validation for type-safe form handling
-- **Internationalization**: Built-in Persian language support with RTL layout and Persian date/number utilities
+- **Internationalization**: Built-in RTL support and Persian date/number formatting utilities
 
 ### Backend Architecture
-- **Framework**: Express.js with TypeScript using ESM modules
-- **API Design**: RESTful endpoints for events and registrations with JSON responses
-- **Error Handling**: Centralized error middleware with structured error responses
-- **Development**: Vite middleware integration for hot module replacement in development
-- **Storage Layer**: Abstracted storage interface with in-memory implementation for development
+The server follows a REST API pattern with Express.js:
+- **Runtime**: Node.js with TypeScript and ES modules
+- **Framework**: Express.js with middleware for JSON parsing, CORS, and session management
+- **Authentication**: Session-based authentication with memory storage (can be extended to use PostgreSQL sessions)
+- **Storage Layer**: Abstracted storage interface (IStorage) with in-memory implementation for development
+- **Error Handling**: Centralized error handling middleware with proper HTTP status codes
 
 ### Data Storage Solutions
-- **ORM**: Drizzle ORM configured for PostgreSQL with schema definitions
-- **Database**: PostgreSQL (configured but currently using in-memory storage for development)
-- **Schema**: Strongly typed database schema with tables for users, events, and registrations
-- **Migrations**: Drizzle Kit for database migrations and schema management
+The application uses a flexible storage architecture:
+- **ORM**: Drizzle ORM for type-safe database operations
+- **Database**: PostgreSQL configured for production use
+- **Schema**: Comprehensive schema supporting users, cafés, clubs, events, and registrations
+- **Development Storage**: In-memory storage implementation for rapid development
+- **Migrations**: Drizzle-kit for database migrations and schema management
 
-### Component Architecture
-- **Design System**: Comprehensive UI component library with consistent theming
-- **Form Components**: Reusable form components with built-in validation
-- **Layout Components**: Responsive navbar and footer with mobile-friendly navigation
-- **Event Components**: Specialized components for event display and registration
+### Authentication and Authorization
+- **Session Management**: Express sessions with configurable storage backends
+- **User Roles**: Multi-tier role system (user, café owner, admin)
+- **Registration System**: Email and password-based registration with validation
+- **Profile Management**: User profile editing and management capabilities
 
 ## External Dependencies
 
-### Database & ORM
-- **Neon Database**: Serverless PostgreSQL database provider (@neondatabase/serverless)
-- **Drizzle ORM**: TypeScript ORM for database operations and schema management
-- **Drizzle Kit**: Database toolkit for migrations and schema generation
+### Core Dependencies
+- **@neondatabase/serverless**: Serverless PostgreSQL driver for cloud deployment
+- **drizzle-orm**: Type-safe ORM for database operations
+- **drizzle-zod**: Integration between Drizzle and Zod for schema validation
 
-### UI Framework & Components
-- **Radix UI**: Comprehensive set of low-level UI primitives for accessibility
-- **Shadcn/ui**: Pre-built component library based on Radix UI
-- **Tailwind CSS**: Utility-first CSS framework for styling
-- **Lucide React**: Icon library for consistent iconography
+### UI and Styling
+- **@radix-ui/react-***: Accessible, unstyled UI primitives (accordion, dialog, dropdown, etc.)
+- **tailwindcss**: Utility-first CSS framework
+- **class-variance-authority**: Type-safe component variants
+- **clsx**: Conditional class name utility
 
-### Form Handling & Validation
-- **React Hook Form**: Performant forms library with minimal re-renders
-- **Zod**: TypeScript-first schema validation library
-- **Hookform Resolvers**: Integration between React Hook Form and Zod
+### State Management and Data Fetching
+- **@tanstack/react-query**: Powerful data synchronization for React
+- **@hookform/resolvers**: Form validation resolvers for React Hook Form
+- **zod**: TypeScript-first schema validation
 
-### State Management & Data Fetching
-- **TanStack Query**: Server state management with caching and synchronization
-- **Wouter**: Lightweight routing library for React applications
+### Development and Build Tools
+- **vite**: Fast build tool and development server
+- **typescript**: Static type checking
+- **@vitejs/plugin-react**: React integration for Vite
+- **@replit/vite-plugin-***: Replit-specific development enhancements
 
-### Development & Build Tools
-- **Vite**: Fast build tool and development server
-- **TypeScript**: Static type checking and enhanced developer experience
-- **ESBuild**: Fast JavaScript bundler for production builds
-- **Replit Integration**: Custom Vite plugins for Replit development environment
-
-### Typography & Localization
-- **Google Fonts**: Vazirmatn and Estedad fonts for Persian text support
-- **Date-fns**: Date manipulation and formatting utilities
-- **Custom Persian Utils**: Built-in utilities for Persian date formatting and digit conversion
+### Utilities and Helpers
+- **date-fns**: Modern JavaScript date utility library
+- **wouter**: Minimalist routing for React
+- **lucide-react**: Beautiful and customizable SVG icons
+- **embla-carousel-react**: Carousel component for React applications

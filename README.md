@@ -1,89 +1,169 @@
-# Persian Book Club Café (باشگاه کافه کتاب)
+# باشگاه کافه کتاب (Persian Book Club Café)
 
-A Persian-language book club café application built with React, Express, and TypeScript with full RTL support.
-
-## Prerequisites
-
-**Required Node.js Version: 20.11.0 or higher**
-
-This project uses `import.meta.dirname` which requires Node.js v20.11+. If you're getting path resolution errors, upgrade your Node.js version:
-
-```bash
-# Check your current version
-node --version
-
-# If you see v18.x.x or older, upgrade to Node.js v20+
-# Using nvm (recommended):
-nvm install 20
-nvm use 20
-
-# Or download from: https://nodejs.org/en/download/
-```
-
-## Quick Start
-
-### Option 1: Run from Root Directory (Recommended)
-```bash
-# From the project root directory
-npm run dev    # Starts development server
-npm run build  # Builds the project
-npm run start  # Starts production server
-```
-
-### Option 2: Run from Client Directory
-```bash
-# From the client folder
-cd client
-npm run dev    # Redirects to root and starts dev server
-npm run build  # Redirects to root and builds project
-```
-
-## Project Structure
-
-This is a monorepo with the following structure:
-```
-├── client/          # React frontend
-├── server/          # Express backend
-├── shared/          # Shared types and schemas
-├── attached_assets/ # Static assets
-└── vite.config.ts   # Vite configuration (configured for monorepo)
-```
-
-## Troubleshooting
-
-### Error: "paths[0] argument must be of type string. Received undefined"
-
-This error occurs due to Node.js version incompatibility. The project uses `import.meta.dirname` which requires Node.js v20.11+.
-
-**Solutions:**
-1. **Upgrade Node.js to v20.11.0 or higher** (Required)
-2. Ensure you're running commands from the project root directory
-3. Restart your terminal/IDE after upgrading Node.js
-
-**If you're still getting errors after upgrading Node.js:**
-- Clear node_modules: `rm -rf node_modules package-lock.json && npm install`
-- Restart your terminal completely
-- Verify Node.js version: `node --version` should show v20.x.x or higher
-
-### Development Notes
-
-- The project uses `import.meta.dirname` which requires Node.js 20.11+ or proper polyfills
-- All path aliases (`@`, `@shared`, `@assets`) are resolved relative to project root
-- The Vite config is protected and optimized for the Replit environment
+A modern Persian-language book club café application built with React, Express, and TypeScript. This application allows book lovers to view upcoming literary events, register for book club meetings, and participate in discussions about Persian literature.
 
 ## Features
 
-- 📚 Persian book club event management
-- 🔐 User authentication and profiles
-- 📱 Responsive design with RTL support
-- ☕ Café-themed UI with Persian typography
-- 🎯 Event registration and cancellation
-- 👥 Club creation and management
+- 📚 **Event Management**: View and register for upcoming book club events
+- 🔐 **User Authentication**: Secure login and registration system
+- 🎨 **Persian UI**: Right-to-left (RTL) support with Persian typography
+- 📱 **Responsive Design**: Mobile-friendly interface with Tailwind CSS
+- ☕ **Café Theme**: Warm, coffee-inspired color palette and styling
+- 🗄️ **Database Ready**: PostgreSQL integration with Drizzle ORM
 
 ## Tech Stack
 
-- **Frontend:** React 18, TypeScript, Tailwind CSS, Shadcn/ui
-- **Backend:** Express.js, TypeScript
-- **Database:** PostgreSQL with Drizzle ORM
-- **Build:** Vite, ESBuild
-- **Development:** Hot reload, TypeScript strict mode
+### Frontend
+- **React 18** with TypeScript
+- **Vite** for fast development and building
+- **Tailwind CSS** for styling
+- **Shadcn/ui** component library
+- **TanStack Query** for state management
+- **React Hook Form** with Zod validation
+- **Wouter** for routing
+
+### Backend
+- **Express.js** with TypeScript
+- **Drizzle ORM** for database operations
+- **PostgreSQL** database
+- **Passport.js** for authentication
+- **Express Session** for session management
+
+## Prerequisites
+
+- **Node.js 20.11.0 or higher** (required for `import.meta.dirname`)
+- **npm** or **yarn**
+- **PostgreSQL** database (optional for development)
+
+## Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd persian-book-club-cafe
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Environment Setup**
+   
+   Create a `.env` file in the root directory:
+   ```env
+   NODE_ENV=development
+   DATABASE_URL=postgresql://username:password@localhost:5432/bookclub
+   SESSION_SECRET=your-session-secret-here
+   ```
+
+4. **Database Setup** (Optional)
+   
+   If using PostgreSQL:
+   ```bash
+   npm run db:push
+   ```
+   
+   The application will use in-memory storage by default for development.
+
+## Development
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+This will start both the Express backend and Vite frontend development servers on port 5000.
+
+## Building for Production
+
+1. **Build the application**
+   ```bash
+   npm run build
+   ```
+
+2. **Start the production server**
+   ```bash
+   npm start
+   ```
+
+## Project Structure
+
+```
+├── client/                 # React frontend
+│   ├── src/
+│   │   ├── components/     # UI components
+│   │   ├── pages/         # Application pages
+│   │   ├── hooks/         # Custom React hooks
+│   │   └── lib/           # Utilities and configuration
+├── server/                # Express backend
+│   ├── index.ts          # Server entry point
+│   ├── routes.ts         # API routes
+│   ├── storage.ts        # Storage abstraction
+│   └── vite.ts           # Vite middleware setup
+├── shared/               # Shared types and schemas
+│   └── schema.ts         # Database schema definitions
+└── package.json
+```
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm start` - Start production server
+- `npm run check` - Type checking
+- `npm run db:push` - Push database schema changes
+
+## Key Features
+
+### Authentication System
+- User registration and login
+- Session-based authentication
+- Protected event registration
+- Persian error messages and validation
+
+### Event Management
+- View upcoming book club events
+- Detailed event information
+- User registration for events
+- Terms and conditions acceptance
+
+### Persian Language Support
+- Right-to-left (RTL) layout
+- Persian fonts (Vazirmatn, Estedad)
+- Persian date formatting
+- Localized UI text and messages
+
+## Configuration
+
+### Database
+The application uses Drizzle ORM with PostgreSQL. For development, it falls back to in-memory storage if no database is configured.
+
+### Session Management
+Sessions are handled using Express Session with PostgreSQL store for production and memory store for development.
+
+### Styling
+The application uses a custom café-themed color palette:
+- Primary: Coffee browns and caramels
+- Secondary: Warm creams and cinnamons
+- Accent: Rich espresso tones
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- Persian typography support via Google Fonts
+- UI components from Shadcn/ui and Radix UI
+- Icons from Lucide React
+- Built with modern React and TypeScript ecosystem
